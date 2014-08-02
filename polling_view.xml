@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+        <record id="polling_assettemplatecategory_search_view" model="ir.ui.view">
+            <field name="name">polling.assettemplatecategory.search</field>
+            <field name="model">polling.assettemplatecategory</field>
+            <field name="arch" type="xml">
+                <search string="Category">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="polling_assettemplatecategory_form_view" model="ir.ui.view">
+            <field name="name">polling.assettemplatecategory.form</field>
+            <field name="model">polling.assettemplatecategory</field>
+            <field name="arch" type="xml">
+                <form string="Category" version="7.0">
+                    <sheet>
+                    	<group col="4">
+							<field name="parent_id" string="Parent"/>
+							<field name="name" string="Name"/>
+						</group>
+						<group col="4" string="Remark">
+								<field name="remark" placeholder="Remark...." colspan="4" nolabel="1"/>
+						</group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="polling_assettemplate_category_list_view" model="ir.ui.view">
+            <field name="name">polling.assettemplatecategory.list</field>
+            <field name="model">polling.assettemplatecategory</field>
+            <field name="priority">1</field>
+            <field name="view_mode">tree,form</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Category">
+                    <field name="complete_name"/>
+                    <field name="remark"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="polling_assettemplate_form_view" model="ir.ui.view">
+            <field name="name">polling.assettemplate.form</field>
+            <field name="model">polling.assettemplate</field>
+            <field name="arch" type="xml">
+                <form string="Category" version="7.0">
+                    <sheet>
+                        <group col="4">
+                            <field name="code"/> 
+                            <field name="category_id"/>
+                            <field name="name" colspan="3"/>
+                        </group>
+                        <group col="4" string="Remark">
+                                <field name="description" placeholder="Remark...." colspan="4" nolabel="1"/>
+                        </group>
+                        <notebook>
+							<page string="Attributes">
+								<field name="attributes">
+									<tree string="Attributes" version="7.0" editable="bottom">
+										  <field name="code"/>
+										  <field name="name"/>
+										  <field name="datatype"/>
+										  <field name="controltype"/>
+										  <field name="defaultvalue"/>
+										  <field name="high"/>
+										  <field name="low"/>
+										  <field name="state"/>
+										  <button name="push_attribute" type="object" string="Push" icon="gtk-go-forward" states="nopush" />
+									 </tree> 
+								</field>
+							</page>                        
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+			
+		<record id="polling_assettemplate_list_view" model="ir.ui.view">
+            <field name="name">polling.assettemplate.list</field>
+            <field name="model">polling.assettemplate</field>
+            <field name="priority">1</field>
+            <field name="view_mode">tree,form</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Template">
+                    <field name="complete_name"/>
+                    <field name="category_id"/>
+					<field name="code"/>
+                </tree>
+            </field>
+        </record>
+  
+        <record id="polling_template_attibute_view_form" model="ir.ui.view">
+            <field name="name">polling.assettemplate.attribute.form</field>
+            <field name="model">polling.assettemplate.attribute</field>
+            <field name="arch" type="xml">
+                <form string="Attribute" version="7.0">
+                    <sheet>
+                    	<group col="4">
+							<field name="assettemplate_id"/>
+							<field name="name"/>
+							<field name="code"/>
+							<field name="tooltip"/>
+							<field name="securitylevel"/>
+							<field name="datatype"/>
+							<field name="controltype"/>
+							<field name="sourcefrom"/>
+							<field name="sourcetype"/>
+							<field name="defaultvalue"/>
+							<field name="high"/>
+							<field name="low"/>
+						</group>
+						<group col="4" string="Remark">
+								<field name="remark" placeholder="Remark...." colspan="4" nolabel="1"/>
+						</group>
+                    </sheet>
+                </form>
+            </field>
+		</record>
+		
+		<record id="view_polling_asset_filter" model="ir.ui.view">
+			<field name="name">view.polling.asset.filter</field>
+			<field name="model">polling.asset</field>
+			<field name="arch" type="xml">
+				<search string="Search Asset">
+					<field name="name"/>
+					<field name="code"/>
+					<group expand="0" string="Group By....">
+						<filter string="Template" name="group_template_id" domain="[]" context="{'group_by':'assettemplate_id'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+		
+		<record id="polling_asset_form_view" model="ir.ui.view">
+            <field name="name">polling.asset.form</field>
+            <field name="model">polling.asset</field>
+            <field name="arch" type="xml">
+                <form string="Asset" version="7.0">
+                    <sheet>
+                        <group col="4">
+							<!--<field name="assettemplate_id" on_change="onchange_parent_get_inherit_attributes(assettemplate_id)"/>-->
+							<field name="category_id"/>
+                            <field name="assettemplate_id"/>
+                            <field name="code"/>
+                            <field name="name"/>
+							<field name="specification"/>
+							<field name="producingarea"/>
+							<field name="install_building_id"/>
+							<field name="install_position_id"/>
+							<field name="dateofproduced"/>
+							<field name="service_life"/>
+							<field name="dateofinstalled"/>
+							<field name="buying_price"/>
+							<field name="factory_number"/>
+							<field name="asset_count"/>
+							<field name="asset_used" colspan="4"/>
+							<field name="is_data_collect" colspan="4"/>
+						</group>
+						<group col="4" string="Attachment content">
+							<field name="attachment_content" placeholder="Attachment content" nolabel="1" colspan="4"/>
+						</group>
+						<group col="4" string="Remark">
+							<field name="remark" placeholder="Remark...." colspan="4" nolabel="1"/>
+						</group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="polling_asset_list_view" model="ir.ui.view">
+            <field name="name">polling.asset.list</field>
+            <field name="model">polling.asset</field>
+            <field name="priority">1</field>
+            <field name="view_mode">tree,form</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Asset">
+					<field name="assettemplate_id"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="polling_rule_list_view" model="ir.ui.view">
+            <field name="name">polling.rule.list</field>
+            <field name="model">polling.rule</field>
+            <field name="priority">1</field>
+            <field name="view_mode">tree,form</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Rules" version="7.0">
+					<field name="category_id"/>
+					<field name="template_id"/>
+					<field name="asset_id"/>
+                    <field name="data_collect_id"/>
+                    <field name="collect_type"/>
+                    <field name="collect_period"/>
+                    <field name="collect_period_count"/>
+                </tree>
+            </field>
+		</record>
+
+		<record id="polling_rule_form_view" model="ir.ui.view">
+			<field name="name">polling.rule.form.view</field>
+			<field name="model">polling.rule</field>
+			<field name="view_mode">tree,form</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Rules" version="7.0">
+					<sheet>
+						<group col="4">
+						    <field name="name"/>
+							<field name="category_id"/>
+							<field name="template_id"/>
+							<field name="asset_id"/>
+							<field name="data_collect_id"/>
+							<field name="collect_type"/>
+							<field name="collect_period"/>
+							<field name="collect_period_count" colspan="4"/>
+						</group>
+						<group col="4">
+							<field name="remark" colspan="4"/>
+							<field name="hasstop" colspan="4"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+	   <record id="aasettemplatecategory_category_action" model="ir.actions.act_window">
+            <field name="name">Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">polling.assettemplatecategory</field>
+            <field name="domain">[]</field>
+           <field name="view_type">form</field>
+	   </record>
+
+        <record id="polling_action_relationtype_show" model="ir.actions.act_window">
+            <field name="name">Relation Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">polling.relationtype</field>
+            <field name="domain">[]</field>
+           <field name="view_type">form</field>
+	   </record>
+
+       <record id="polling_action_templateattribute_show" model="ir.actions.act_window">
+            <field name="name">Attributes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">polling.assettemplate.attribute</field>
+            <!--<field name="domain">[('parent_id','=',False)]</field>-->
+            <field name="domain">[]</field>
+           <field name="view_type">form</field>
+	   </record>
+
+       <record id="polling_action_assettemplate_show" model="ir.actions.act_window">
+            <field name="name">AssetTemplate</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">polling.assettemplate</field>
+            <!--<field name="domain">[('parent_id','=',False)]</field>-->
+            <field name="domain">[]</field>
+            <field name="view_type">form</field>
+        </record>
+
+       <record id="polling_action_asset_show" model="ir.actions.act_window">
+            <field name="name">Asset</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">polling.asset</field>
+            <!--<field name="domain">[('parent_id','=',False)]</field>-->
+            <field name="domain">[]</field>
+            <field name="view_type">form</field>
+			<field name="search_view_id" ref="view_polling_asset_filter"/>
+        </record>
+
+		<record id="polling_action_rule_show" model="ir.actions.act_window">
+			<field name="name">Collect rules</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">polling.rule</field>
+			<field name="view_type">form</field>
+		</record>
+
+		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
+		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
+		<menuitem id="menu_polling_templatecategory_manager" action="aasettemplatecategory_category_action" name="设备分组" parent="menu_polling_template_root" sequence="30"/>
+		<menuitem id="menu_polling_assettemplate_manager" action="polling_action_assettemplate_show" name="设备表单定义" parent="menu_polling_template_root" sequence="30"/>
+		<menuitem id="menu_polling_asset_manager" action="polling_action_asset_show" name="设备台账管理" parent="menu_polling_template_root" sequence="30"/>
+		<menuitem id="menu_polling_rule_manager" action="polling_action_rule_show" name="设备采集规则" parent="menu_polling_template_root" sequence="30"/>
+	</data>
+</openerp>

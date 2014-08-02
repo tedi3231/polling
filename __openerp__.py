@@ -1,0 +1,16 @@
+{
+    "name":"Polling",
+    "version":"1.0",
+    "author":"tedi3231",
+    "category":"Maintain",
+    "website":"http://www.wedoapp.com",
+    "description":"智能楼宇设备巡检系统",
+    "data":[
+        "polling_view.xml",
+    ],
+    "depends":[
+        "web",
+        "hr",
+    ],
+    "installable":True,
+}
