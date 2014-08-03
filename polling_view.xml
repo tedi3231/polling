@@ -249,14 +249,16 @@
 					<sheet>
 						<group col='4'>
 							<field name='name'/>
-							<field name='asset_id'/>
-							<field name='asset_name'/>
-							<field name='asset_specification'/>
-							<field name='category_id'/>
-							<field name='install_building'/>
-							<field name='install_building_position'/>
+							<field name='asset_id' on_change='on_asset_change(asset_id)'/>
+							<field name='asset_specification' readonly='True'/>
+							<field name='category_id' readonly='True'/>
+							<field name='install_building' readonly='True'/>
+							<field name='install_building_position' readonly='True'/>
 							<field name='repair_man'/>
 							<field name='repair_date'/>
+							<field name='create_time' readonly='True'/>
+							<field name='repairing_time' readonly='True'/>
+							<field name='finished_time' readonly='True'/>
 						</group>
 						<group col='4' string='Repair reason'>
 							<field name='fault_reason' colspan='4' nolabel='1'/>
@@ -281,13 +283,13 @@
 				<tree string='Repairs' version='7.0' colors='red:state=="draft";green:state=="reparing";blue:state=="finished";'>
 					<field name='name'/>
 					<field name='asset_id'/>
-					<field name='asset_name'/>
 					<field name='asset_specification'/>
 					<field name='category_id'/>
 					<field name='install_building'/>
 					<field name='install_building_position'/>
 					<field name='repair_man'/>
 					<field name='repair_date'/>
+					<field name='finished_time'/>
 					<field name='state'/>
 				</tree>
 			</field>
@@ -308,14 +310,16 @@
 					<sheet>
 						<group col='4'>
 							<field name='name'/>
-							<field name='asset_id'/>
-							<field name='asset_name'/>
-							<field name='asset_specification'/>
-							<field name='category_id'/>
-							<field name='install_building'/>
-							<field name='install_building_position'/>
+							<field name='asset_id' on_change='on_asset_change(asset_id)'/>
+							<field name='asset_specification' readonly='True'/>
+							<field name='category_id' readonly='True'/>
+							<field name='install_building' readonly='True'/>
+							<field name='install_building_position' readonly='True'/>
 							<field name='maintain_man'/>
 							<field name='maintain_date'/>
+							<field name='create_time' readonly='True'/>
+							<field name='maintaining_time' readonly='True'/>
+							<field name='finished_time' readonly='True'/>
 						</group>
 						<group col='4' string='Maintain reason'>
 							<field name='maintain_reason' colspan='4' nolabel='1'/>
@@ -340,7 +344,6 @@
 				<tree string='Maintains' version='7.0' colors='red:state=="draft";green:state=="maintaining";blue:state=="finished";'>
 					<field name='name'/>
 					<field name='asset_id'/>
-					<field name='asset_name'/>
 					<field name='asset_specification'/>
 					<field name='category_id'/>
 					<field name='install_building'/>
@@ -348,6 +351,7 @@
 					<field name='maintain_man'/>
 					<field name='maintain_date'/>
 					<field name='maintain_time'/>
+					<field name='finished_time'/> 
 					<field name='state'/>
 				</tree>
 			</field>

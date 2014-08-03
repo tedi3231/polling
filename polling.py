@@ -4,6 +4,7 @@ from openerp import tools
 from openerp.tools.translate import _
 from openerp.modules.registry import RegistryManager
 import string
+import datetime
 
 SECURITYLEVEL = [('high','High'),('low','Low'),('middle','Middle')]
 EXECUTELEVEL = [('high','High'),('low','Low'),('middle','Middle')]
@@ -449,10 +450,24 @@ class polling_repair(osv.osv):
     _name = "polling.repair"
 
     def act_repairing(self,cr,uid,ids,context=None):
-        return self.write(cr,uid,ids,{'state':'repairing'},context=context)
+        return self.write(cr,uid,ids,{'state':'repairing','repairing_time':datetime.datetime.now()},context=context)
 
     def act_finish(self,cr,uid,ids,context=None):
-        return self.write(cr,uid,ids,{'state':'finished'},context=context)
+        return self.write(cr,uid,ids,{'state':'finished','finished_time':datetime.datetime.now()},context=context)
+
+    def on_asset_change(self,cr,uid,ids,asset_id,context=None):
+        asset_rep = self.pool.get('polling.asset')
+        item = asset_rep.read(cr,uid,asset_id,context=context)
+        print 'asset item is %s' % item
+        return {
+            'value':{
+                'category_id':item['category_id'] and item['category_id'][0],
+                'install_building':item['install_building_id'] and item['install_building_id'][0],
+                'specification':item['specification'],
+                'asset_code':item['code'],
+                'install_building_position':item['install_position_id'] and item['install_position_id'][0],
+            }
+        }
 
     _columns = {
         "name":fields.char(string="Repair Number",required=True,size=100),
@@ -460,7 +475,6 @@ class polling_repair(osv.osv):
         'category_id':fields.related('asset_id','category_id',type='many2one',relation='polling.assettemplatecategory',string='Category'),
         "install_building":fields.related("asset_id","install_building_id",type="many2one",relation="polling.building",string="Building"),
         "install_building_position":fields.related("asset_id",'install_position_id',type='many2one',relation='polling.building.position',string='Position'),
-        "asset_name":fields.related('asset_id','name',type='char',string='Asset Name'),
         'asset_code':fields.related('asset_id','code',type='char',string='Asset Code'),
         'asset_specification':fields.related('asset_id','specification',type='char',string='Specification'),
         'repair_man':fields.many2one('hr.employee',string='Repair man'),
@@ -470,10 +484,14 @@ class polling_repair(osv.osv):
         'repair_method':fields.text(string='Repair method'),
         'prevent_suggest':fields.text(string='Prevent suggest'),
         'state':fields.selection([('draft','Wait confirm'),('repairing','Reparing'),('finished','Finished')],string='Status'),
+        'create_time':fields.datetime(string='Create time'),
+        'repairing_time':fields.datetime(string='Start repairing time'),
+        'finished_time':fields.datetime(string='Finish repairing time'),
         'remark':fields.text(string='Remark'),
     }
     _defaults = {
         'state':'draft',
+        "create_time":lambda self, cr, uid, context:datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 polling_repair()
 
@@ -481,18 +499,31 @@ class polling_maintain(osv.osv):
     _name = "polling.maintain"
 
     def act_maintaining(self,cr,uid,ids,context=None):
-        return self.write(cr,uid,ids,{'state':'maintaining'},context=context)
+        return self.write(cr,uid,ids,{'state':'maintaining','maintaining_time':datetime.datetime.now()},context=context)
 
     def act_finish(self,cr,uid,ids,context=None):
-        return self.write(cr,uid,ids,{'state':'finished'},context=context)
-
+        return self.write(cr,uid,ids,{'state':'finished','finished_time':datetime.datetime.now()},context=context)
+    
+    def on_asset_change(self,cr,uid,ids,asset_id,context=None):
+        asset_rep = self.pool.get('polling.asset')
+        item = asset_rep.read(cr,uid,asset_id,context=context)
+        print 'asset item is %s' % item
+        return {
+            'value':{
+                'category_id':item['category_id'] and item['category_id'][0],
+                'install_building':item['install_building_id'] and item['install_building_id'][0],
+                'specification':item['specification'],
+                'asset_code':item['code'],
+                'install_building_position':item['install_position_id'] and item['install_position_id'][0],
+            }
+        }
+    
     _columns = {
         "name":fields.char(string="Maintain number",required=True,size=100),
         "asset_id":fields.many2one("polling.asset",string="Asset"),
         'category_id':fields.related('asset_id','category_id',type='many2one',relation='polling.assettemplatecategory',string='Category'),
         "install_building":fields.related("asset_id","install_building_id",type="many2one",relation="polling.building",string="Building"),
         "install_building_position":fields.related("asset_id",'install_position_id',type='many2one',relation='polling.building.position',string='Position'),
-        "asset_name":fields.related('asset_id','name',type='char',string='Asset Name'),
         'asset_code':fields.related('asset_id','code',type='char',string='Asset Code'),
         'asset_specification':fields.related('asset_id','specification',type='char',string='Specification'),
         'maintain_man':fields.many2one('hr.employee',string='Repair man'),
@@ -501,9 +532,13 @@ class polling_maintain(osv.osv):
         'maintain_reason':fields.text(string='Maintain reason'),
         'maintain_method':fields.text(string='Maintain method'),
         'state':fields.selection([('draft','Wait confirm'),('maintaining','Reparing'),('finished','Finished')],string='Status'),
+        'create_time':fields.datetime(string='Create time'),
+        'maintaining_time':fields.datetime(string='Start maintain time'),
+        'finished_time':fields.datetime(string='Finish maintain time'),
         'remark':fields.text(string='Remark'),
     }
     _defaults = {
         'state':'draft',
+        "create_time":lambda self, cr, uid, context:datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 polling_maintain()
