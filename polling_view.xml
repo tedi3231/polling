@@ -266,9 +266,23 @@
 						<group col='4' string='Repair method'>
 							<field name='repair_method' colspan='4' nolabel='1'/>
 						</group>
+						<notebook>
+							<page string="Repair lines">
+								<field name="polling_repair_lines">
+									<tree version="7.0" string="Repair lines">
+										<field name='name'/>
+										<field name='type'/>
+										<field name='product_id'/>
+										<field name='product_qty'/>
+										<field name='operation_time'/>
+ 									</tree>
+								</field>
+							</page>
+						</notebook>
 						<group col='4' string='Remark'>
 							<field name='remark' colspan='4' nolabel='1'/>
 						</group>
+						
 					</sheet>
 				</form>
 			</field>
@@ -294,6 +308,19 @@
 				</tree>
 			</field>
 		</record>
+
+		<record id="polling_repair_search_view" model="ir.ui.view">
+            <field name="name">polling.repair.search.view</field>
+            <field name="model">polling.repair</field>
+            <field name="arch" type="xml">
+                <search string="Repair">
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="repair_date" string="Start date" filter_domain="[('repair_date','&gt;',self)]"/>
+                    <field name="repair_date" string="End date" filter_domain="[('repair_date','&lt;',self)]"/>
+                </search>
+            </field>
+        </record>
 
 		<record id="polling_maintain_form_view" model="ir.ui.view">
 			<field name='name'>polling.maintain.form.view</field>
@@ -327,6 +354,19 @@
 						<group col='4' string='Maintain method'>
 							<field name='maintain_method' colspan='4' nolabel='1'/>
 						</group>
+						<notebook>
+							<page string="Maintain lines">
+								<field name="polling_maintain_lines">
+									<tree version="7.0" string="Maintain lines">
+										<field name='name'/>
+										<field name='type'/>
+										<field name='product_id'/>
+										<field name='product_qty'/>
+										<field name='operation_time'/>
+ 									</tree>
+								</field>
+							</page>
+						</notebook>
 						<group col='4' string='Remark'>
 							<field name='remark' colspan='4' nolabel='1'/>
 						</group>
@@ -357,6 +397,22 @@
 			</field>
 		</record>
 
+		<record id="polling_maintain_search_view" model="ir.ui.view">
+            <field name="name">polling.maintain.search.view</field>
+            <field name="model">polling.maintain</field>
+            <field name="arch" type="xml">
+                <search string="Maintain">
+                    <field name="name"/>
+                    <field name="maintain_date"/>
+                    <field name="category_id"/>
+                    <field name="maintain_date" string="Start date" filter_domain="[('maintain_date','&gt;=',self)]"/>
+                    <field name="maintain_date" string="End date" filter_domain="[('maintain_date','&lt;=',self)]"/>
+                    <group expand='0' string='Group by...'>
+                   		<filter string='Asset' icon="terp-stock_symbol-selection" domain="[]" context="{'group_by' : 'asset_id'}"/>
+                   	</group>
+                </search>
+            </field>
+        </record>
 		
 	   <record id="aasettemplatecategory_category_action" model="ir.actions.act_window">
             <field name="name">Category</field>
@@ -414,6 +470,7 @@
 			<field name='type'>ir.actions.act_window</field>
 			<field name='res_model'>polling.repair</field>
 			<field name='view_type'>form</field>
+			<field name="search_view_id" ref="polling_repair_search_view"/>
 		</record>
 
 		<record id="polling_action_maintain_show" model="ir.actions.act_window">
@@ -421,6 +478,7 @@
 			<field name='type'>ir.actions.act_window</field>
 			<field name='res_model'>polling.maintain</field>
 			<field name='view_type'>form</field>
+			<field name="search_view_id" ref="polling_maintain_search_view"/>
 		</record>
 
 		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
@@ -432,5 +490,7 @@
 		<menuitem id="menu_polling_maintain_root" name="设备维护管理" parent="menu_polling_root" sequence="40"/>
 		<menuitem id="menu_polling_repair_manager" action="polling_action_repair_show" name="设备维修登记" parent="menu_polling_maintain_root" sequence="40"/>
 		<menuitem id="menu_polling_maintain_manager" action="polling_action_maintain_show" name="设备保养登记" parent="menu_polling_maintain_root" sequence="40"/>
+		<menuitem id="menu_polling_products_category_manager" action="product.product_category_action_form"  name="备件类别管理" parent="menu_polling_maintain_root" sequence="40"/>
+		<menuitem id="menu_polling_products_manager" action="product.product_normal_action_sell"  name="设备备件管理" parent="menu_polling_maintain_root" sequence="40"/>
 	</data>
 </openerp>

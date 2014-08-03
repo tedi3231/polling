@@ -11,6 +11,7 @@
     "depends":[
         "web",
         "hr",
+        "product",
     ],
     "installable":True,
 }

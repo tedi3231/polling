@@ -487,6 +487,7 @@ class polling_repair(osv.osv):
         'create_time':fields.datetime(string='Create time'),
         'repairing_time':fields.datetime(string='Start repairing time'),
         'finished_time':fields.datetime(string='Finish repairing time'),
+        'polling_repair_lines':fields.one2many('polling.repair.line','polling_repair_id',string='Repair lines'),
         'remark':fields.text(string='Remark'),
     }
     _defaults = {
@@ -494,6 +495,39 @@ class polling_repair(osv.osv):
         "create_time":lambda self, cr, uid, context:datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 polling_repair()
+
+
+class polling_repair_line(osv.osv):
+    _name = "polling.repair.line"
+
+    _columns = {
+        "name":fields.char(string="Description",size=100,required=True),
+        "polling_repair_id":fields.many2one("polling.repair","Repair Order",ondelete="cascade",select=True),
+        "type":fields.selection([("add","Add"),("remove","Remove")],string="Operation",required=True),
+        "product_id":fields.many2one("product.product","Product",required=True),
+        "product_qty":fields.integer(string="Product Qty"),
+        "operation_time":fields.datetime(string="Operation Time"),
+    }
+    _defaults = {
+        "operation_time":lambda self,cr,uid,context:datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+    }
+polling_repair_line()
+
+class polling_maintain_line(osv.osv):
+    _name = 'polling.maintain.line'
+    _inherit = 'polling.repair.line'
+    _columns = {
+        "name":fields.char(string="Description",size=100,required=True),
+        "polling_maintain_id":fields.many2one("polling.maintain","Maintain Order",ondelete="cascade",select=True),
+        "type":fields.selection([("add","Add"),("remove","Remove")],string="Operation",required=True),
+        "product_id":fields.many2one("product.product","Product",required=True),
+        "product_qty":fields.integer(string="Product Qty"),
+        "operation_time":fields.datetime(string="Operation Time"),
+    }
+    _defaults = {
+        "operation_time":lambda self,cr,uid,context:datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+    }
+polling_maintain_line()
 
 class polling_maintain(osv.osv):
     _name = "polling.maintain"
@@ -535,6 +569,7 @@ class polling_maintain(osv.osv):
         'create_time':fields.datetime(string='Create time'),
         'maintaining_time':fields.datetime(string='Start maintain time'),
         'finished_time':fields.datetime(string='Finish maintain time'),
+        'polling_maintain_lines':fields.one2many('polling.maintain.line','polling_maintain_id',string='Maintain lines'),
         'remark':fields.text(string='Remark'),
     }
     _defaults = {
