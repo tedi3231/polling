@@ -444,3 +444,66 @@ class polling_rule(osv.osv):
         "hasstop":False
     }
 polling_rule()
+
+class polling_repair(osv.osv):
+    _name = "polling.repair"
+
+    def act_repairing(self,cr,uid,ids,context=None):
+        return self.write(cr,uid,ids,{'state':'repairing'},context=context)
+
+    def act_finish(self,cr,uid,ids,context=None):
+        return self.write(cr,uid,ids,{'state':'finished'},context=context)
+
+    _columns = {
+        "name":fields.char(string="Repair Number",required=True,size=100),
+        "asset_id":fields.many2one("polling.asset",string="Asset"),
+        'category_id':fields.related('asset_id','category_id',type='many2one',relation='polling.assettemplatecategory',string='Category'),
+        "install_building":fields.related("asset_id","install_building_id",type="many2one",relation="polling.building",string="Building"),
+        "install_building_position":fields.related("asset_id",'install_position_id',type='many2one',relation='polling.building.position',string='Position'),
+        "asset_name":fields.related('asset_id','name',type='char',string='Asset Name'),
+        'asset_code':fields.related('asset_id','code',type='char',string='Asset Code'),
+        'asset_specification':fields.related('asset_id','specification',type='char',string='Specification'),
+        'repair_man':fields.many2one('hr.employee',string='Repair man'),
+        'repair_date':fields.datetime(string='Repair date'),
+        'repair_time':fields.integer(string='Repair time'),
+        'fault_reason':fields.text(string='Fault reason'),
+        'repair_method':fields.text(string='Repair method'),
+        'prevent_suggest':fields.text(string='Prevent suggest'),
+        'state':fields.selection([('draft','Wait confirm'),('repairing','Reparing'),('finished','Finished')],string='Status'),
+        'remark':fields.text(string='Remark'),
+    }
+    _defaults = {
+        'state':'draft',
+    }
+polling_repair()
+
+class polling_maintain(osv.osv):
+    _name = "polling.maintain"
+
+    def act_maintaining(self,cr,uid,ids,context=None):
+        return self.write(cr,uid,ids,{'state':'maintaining'},context=context)
+
+    def act_finish(self,cr,uid,ids,context=None):
+        return self.write(cr,uid,ids,{'state':'finished'},context=context)
+
+    _columns = {
+        "name":fields.char(string="Maintain number",required=True,size=100),
+        "asset_id":fields.many2one("polling.asset",string="Asset"),
+        'category_id':fields.related('asset_id','category_id',type='many2one',relation='polling.assettemplatecategory',string='Category'),
+        "install_building":fields.related("asset_id","install_building_id",type="many2one",relation="polling.building",string="Building"),
+        "install_building_position":fields.related("asset_id",'install_position_id',type='many2one',relation='polling.building.position',string='Position'),
+        "asset_name":fields.related('asset_id','name',type='char',string='Asset Name'),
+        'asset_code':fields.related('asset_id','code',type='char',string='Asset Code'),
+        'asset_specification':fields.related('asset_id','specification',type='char',string='Specification'),
+        'maintain_man':fields.many2one('hr.employee',string='Repair man'),
+        'maintain_date':fields.datetime(string='Maintain date'),
+        'maintain_time':fields.integer(string='Maitain time'),
+        'maintain_reason':fields.text(string='Maintain reason'),
+        'maintain_method':fields.text(string='Maintain method'),
+        'state':fields.selection([('draft','Wait confirm'),('maintaining','Reparing'),('finished','Finished')],string='Status'),
+        'remark':fields.text(string='Remark'),
+    }
+    _defaults = {
+        'state':'draft',
+    }
+polling_maintain()
