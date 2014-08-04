@@ -338,6 +338,23 @@ class Asset(osv.osv):
     _name="polling.asset"
     _description = "Asset"
 
+    def attachment_tree_view(self, cr, uid, ids, context):
+        domain = [
+             '&', ('res_model', '=', 'polling.asset'), ('res_id', 'in', ids),
+        ]
+        res_id = ids and ids[0] or False
+        return {
+            'name': _('Attachments'),
+            'domain': domain,
+            'res_model': 'ir.attachment',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+            'context': "{'default_res_model': '%s','default_res_id': %d}" % (self._name, res_id)
+        }
+
     _columns = {
         "category_id":fields.many2one("polling.assettemplatecategory",string="Category",select=True),
         "assettemplate_id": fields.many2one('polling.assettemplate',string='Template', select=True, ondelete='cascade'),
@@ -361,6 +378,22 @@ class Asset(osv.osv):
         "is_data_collect":fields.boolean(string="Is data collect"),
     }
 
+    def default_get(self, cr, uid, fields_list, context=None):
+        print'default_get method context is %s,fields_list is %s' % (context,fields_list)
+        default = super(Asset, self).default_get(cr, uid, fields_list, context=context)
+        con = context.get('is_data_collect')
+        default['is_data_collect'] = con
+        return default
+
+    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+        print 'context is %s ' % context
+        if context is None:
+            context = {}
+        result = super(Asset, self).fields_view_get(cr, uid, view_id,  view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+        if view_type =='form':
+            print 'result is %s'%result
+        return result
+
     _defaults = {
         #"code":lambda self,cr,uid,context:self.pool.get("ir.sequence").get(cr,uid,"seq.polling.asset.code"),
         "is_data_collect":False,
@@ -368,7 +401,8 @@ class Asset(osv.osv):
 Asset()
 
 class polling_building(osv.osv):                                                                
-     _name = "polling.building"               
+     _name = "polling.building"         
+
      _columns = {                                                                                    
          "name":fields.char(string="Name",required=True,size=100),                                   
          "remark":fields.char(string="Remark",size=500,required=True),                               
