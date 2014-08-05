@@ -143,8 +143,12 @@
             <field name="arch" type="xml">
                 <form string="Asset" version="7.0">
                     <sheet>
-                    	<group col='4' string='Documents'>
+						<div class='oe_right oe_button_box' name='buttons'>
+							<button name='repair_tree_view' type='object' string='Repairs'/>
+							<button name='maintain_tree_view' type='object' string='Maintains'/>
                     		<button name='attachment_tree_view' type='object' string='Documents'/>
+						</div>
+                    	<group col='4' string='Documents'>
                     	</group>
                         <group col="4">
 							<!--<field name="assettemplate_id" on_change="onchange_parent_get_inherit_attributes(assettemplate_id)"/>-->
@@ -228,8 +232,13 @@
             <field name="arch" type="xml">
                 <tree string="Asset">
 					<field name="assettemplate_id"/>
+					<field name='category_id'/>
                     <field name="name"/>
                     <field name="code"/>
+					<field name='specification'/>
+					<field name='install_building_id'/>
+					<field name='install_position_id'/>
+					<field name='remark'/>
                 </tree>
             </field>
         </record>
@@ -493,7 +502,7 @@
             <field name="domain">[]</field>
             <field name="view_type">form</field>
         </record>
-
+		
        <record id="polling_action_asset_show" model="ir.actions.act_window">
             <field name="name">Asset</field>
             <field name="type">ir.actions.act_window</field>
@@ -521,6 +530,14 @@
 			<field name="view_type">form</field>
 		</record>
 
+		<record id='polling_action_repair_ownasset_show' model='ir.actions.act_window'>
+			<field name='name'>Repairs</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.repair</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='context'>{'default_asset_id':active_id}</field>
+		</record>
+		
 		<record id="polling_action_repair_show" model="ir.actions.act_window">
 			<field name='name'>Repairs</field>
 			<field name='type'>ir.actions.act_window</field>

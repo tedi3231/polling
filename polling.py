@@ -340,6 +340,40 @@ class Asset(osv.osv):
     _name="polling.asset"
     _description = "Asset"
 
+    def maintain_tree_view(self, cr, uid, ids, context):
+        domain = [
+             ('asset_id', 'in', ids),
+        ]
+        res_id = ids and ids[0] or False
+        return {
+            'name': _('Maintain orders'),
+            'domain': domain,
+            'res_model': 'polling.maintain',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+            'context': "{'default_asset_id': %d}" % (res_id)
+        }
+
+    def repair_tree_view(self, cr, uid, ids, context):
+        domain = [
+             ('asset_id', 'in', ids),
+        ]
+        res_id = ids and ids[0] or False
+        return {
+            'name': _('Reparir orders'),
+            'domain': domain,
+            'res_model': 'polling.repair',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+            'context': "{'default_asset_id': %d}" % (res_id)
+        }
+
     def attachment_tree_view(self, cr, uid, ids, context):
         domain = [
              '&', ('res_model', '=', 'polling.asset'), ('res_id', 'in', ids),
