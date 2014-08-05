@@ -520,31 +520,6 @@ class AssetAttribute(osv.osv):
 AssetAttribute()
 
 
-class polling_rule(osv.osv):
-    _name = "polling.rule"
-    _description = "polling rules"
-
-    _columns = {
-        "name":fields.char(string="Name",required=True),
-        "category_id":fields.many2one("polling.assettemplatecategory",string="category"),
-        "template_id":fields.many2one("polling.assettemplate",string="Template"),
-        "asset_id":fields.many2one("polling.asset",string="Asset"),
-        "data_collect_id":fields.many2one("polling.asset",string="Collect"),
-        "collect_type":fields.selection(COLLECT_TYPES,string="type"),
-        "collect_period":fields.integer(string="collect",required=True),
-        "collect_period_count":fields.integer(string="count",required=True),
-        "hasstop":fields.boolean(string="Hasstop"),
-        "remark":fields.text(string="Remark"),
-    }
-
-    _defaults = {
-        "collect_type":"hour",
-        "collect_period":1,
-        "collect_period_count":1,
-        "hasstop":False
-    }
-polling_rule()
-
 class polling_repair(osv.osv):
     _name = "polling.repair"
 

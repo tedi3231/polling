@@ -130,6 +130,7 @@
 				<search string="Search Asset">
 					<field name="name"/>
 					<field name="code"/>
+					<field name='category_id' widget='selection'/>
 					<group expand="0" string="Group By....">
 						<filter string="Template" name="group_template_id" domain="[]" context="{'group_by':'assettemplate_id'}"/>
 					</group>
@@ -148,18 +149,16 @@
 							<button name='maintain_tree_view' type='object' string='Maintains'/>
                     		<button name='attachment_tree_view' type='object' string='Documents'/>
 						</div>
-                    	<group col='4' string='Documents'>
-                    	</group>
                         <group col="4">
 							<!--<field name="assettemplate_id" on_change="onchange_parent_get_inherit_attributes(assettemplate_id)"/>-->
 							<field name="category_id"/>
-                            <field name="assettemplate_id"/>
+                            <field name="assettemplate_id" domain="[('category_id','=',category_id)]"/>
                             <field name="code"/>
                             <field name="name"/>
 							<field name="specification"/>
 							<field name="producingarea"/>
 							<field name="install_building_id"/>
-							<field name="install_position_id"/>
+							<field name="install_position_id" domain="[('polling_building_id','=',install_building_id)]"/>
 							<field name="dateofproduced"/>
 							<field name="service_life"/>
 							<field name="dateofinstalled"/>
@@ -167,7 +166,7 @@
 							<field name="factory_number"/>
 							<field name="asset_count"/>
 							<field name="asset_used" colspan="4"/>
-							<field name="is_data_collect" colspan="4"/>
+							<field name="is_data_collect" colspan="4" invisible='1'/>
 						</group>
 						<group name='collect_data_group'>
 							<notebook>
@@ -242,52 +241,6 @@
                 </tree>
             </field>
         </record>
-
-        <record id="polling_rule_list_view" model="ir.ui.view">
-            <field name="name">polling.rule.list</field>
-            <field name="model">polling.rule</field>
-            <field name="priority">1</field>
-            <field name="view_mode">tree,form</field>
-            <field name="type">tree</field>
-            <field name="arch" type="xml">
-                <tree string="Rules" version="7.0">
-					<field name="category_id"/>
-					<field name="template_id"/>
-					<field name="asset_id"/>
-                    <field name="data_collect_id"/>
-                    <field name="collect_type"/>
-                    <field name="collect_period"/>
-                    <field name="collect_period_count"/>
-                </tree>
-            </field>
-		</record>
-
-		<record id="polling_rule_form_view" model="ir.ui.view">
-			<field name="name">polling.rule.form.view</field>
-			<field name="model">polling.rule</field>
-			<field name="view_mode">tree,form</field>
-			<field name="type">form</field>
-			<field name="arch" type="xml">
-				<form string="Rules" version="7.0">
-					<sheet>
-						<group col="4">
-						    <field name="name"/>
-							<field name="category_id"/>
-							<field name="template_id"/>
-							<field name="asset_id"/>
-							<field name="data_collect_id"/>
-							<field name="collect_type"/>
-							<field name="collect_period"/>
-							<field name="collect_period_count"/>
-						</group>
-						<group col="4">
-							<field name="remark" colspan="4"/>
-							<field name="hasstop" colspan="4"/>
-						</group>
-					</sheet>
-				</form>
-			</field>
-		</record>
 
 		<record id="polling_repair_form_view" model="ir.ui.view">
 			<field name='name'>polling.repair.form.view</field>
@@ -560,7 +513,6 @@
 		<menuitem id="menu_polling_assettemplate_manager" action="polling_action_assettemplate_show" name="设备表单定义" parent="menu_polling_template_root" sequence="30"/>
 		<menuitem id="menu_polling_asset_manager" action="polling_action_asset_show" name="设备台账管理" parent="menu_polling_template_root" sequence="30"/>
 		<menuitem id="menu_polling_collect_asset_manager" action="polling_action_collect_asset_show" name="采集设备管理" parent="menu_polling_template_root" sequence="30"/>
-		<menuitem id="menu_polling_rule_manager" action="polling_action_rule_show" name="设备采集规则" parent="menu_polling_template_root" sequence="38"/>
 		<menuitem id="menu_polling_maintain_root" name="设备维护管理" parent="menu_polling_root" sequence="40"/>
 		<menuitem id="menu_polling_repair_manager" action="polling_action_repair_show" name="设备维修登记" parent="menu_polling_maintain_root" sequence="40"/>
 		<menuitem id="menu_polling_maintain_manager" action="polling_action_maintain_show" name="设备保养登记" parent="menu_polling_maintain_root" sequence="40"/>
