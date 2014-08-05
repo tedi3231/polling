@@ -419,7 +419,7 @@ class Asset(osv.osv):
         print'default_get method context is %s,fields_list is %s' % (context,fields_list)
         default = super(Asset, self).default_get(cr, uid, fields_list, context=context)
         con = context.get('is_data_collect')
-        default['is_data_collect'] = con
+        default['is_data_collect'] = con=='1'
         return default
 
     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
