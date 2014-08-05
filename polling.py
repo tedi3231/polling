@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from openerp.osv import fields,osv
 from openerp import tools
+from lxml import etree
+from openerp.tools import to_xml
 from openerp.tools.translate import _
 from openerp.modules.registry import RegistryManager
 import string
@@ -344,7 +346,7 @@ class Asset(osv.osv):
         ]
         res_id = ids and ids[0] or False
         return {
-            'name': _('Attachments'),
+            'name': _('Documents'),
             'domain': domain,
             'res_model': 'ir.attachment',
             'type': 'ir.actions.act_window',
@@ -376,6 +378,7 @@ class Asset(osv.osv):
         "attachment_content":fields.text(string="Attachment content"),
         "remark":fields.text(string="Remark"),
         "is_data_collect":fields.boolean(string="Is data collect"),
+        'collect_points':fields.one2many('polling.asset.collectpoint','asset_id',string='Collect points'),
     }
 
     def default_get(self, cr, uid, fields_list, context=None):
@@ -389,9 +392,19 @@ class Asset(osv.osv):
         print 'context is %s ' % context
         if context is None:
             context = {}
-        result = super(Asset, self).fields_view_get(cr, uid, view_id,  view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
-        if view_type =='form':
-            print 'result is %s'%result
+        result = super(Asset, self).fields_view_get(cr, uid, view_id,  view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)  
+        doc = etree.XML(result['arch'])
+        is_data_collect = context.get('is_data_collect')
+        if view_type=='form' and is_data_collect=='0':
+            #for node in doc.xpath("//group[@name='collect_data_group']"):
+            #    print 'data_collect_group is %s' % node
+            #    doc.remove(node)
+            for node in doc.xpath("//notebook"):
+                print 'field is %s' % node
+                node.getparent().remove(node)
+                #doc.remove(node)
+        result['arch'] = etree.tostring(doc)
+        print result['arch']
         return result
 
     _defaults = {
@@ -399,6 +412,30 @@ class Asset(osv.osv):
         "is_data_collect":False,
     }
 Asset()
+
+COLLECT_TYPES = [
+    ("second","Second"),
+    ("minute","Minute"),
+    ("hour","Hour"),
+    ("day","Day"),
+]
+
+class AssetCollectPoint(osv.osv):
+    _name = 'polling.asset.collectpoint'
+    _columns = {
+        'name':fields.char(string='Collect name',size=100,required=True),
+        'asset_id':fields.many2one('polling.asset',string='Collect Asset'),
+        'asset_id_2':fields.many2one('polling.asset',string='Collected Asset'),
+        'attribute_id':fields.many2one('polling.assettemplate.attribute',string='Attribute'),
+        'attribute_name':fields.related('attribute_id','name',type='char',string='Attribute name',store=True),
+        'attribute_code':fields.related('attribute_id','code',type='char',string='Attribute code',store=True),
+        'collect_type':fields.selection(COLLECT_TYPES,string="type"),
+        'collect_period':fields.integer(string="collect",required=True),
+        'collect_period_count':fields.integer(string="count",required=True),
+        'hasstop':fields.boolean(string="Hasstop"),
+    }
+    _parent_name='asset_id'
+AssetCollectPoint()
 
 class polling_building(osv.osv):                                                                
      _name = "polling.building"         
@@ -448,12 +485,6 @@ class AssetAttribute(osv.osv):
 
 AssetAttribute()
 
-COLLECT_TYPES = [
-    ("second","Second"),
-    ("minute","Minute"),
-    ("hour","Hour"),
-    ("day","Day"),
-]
 
 class polling_rule(osv.osv):
     _name = "polling.rule"
