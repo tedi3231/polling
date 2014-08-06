@@ -303,8 +303,8 @@
         					<field name='name'/>
 							<field name='asset_id_2'/>
 							<field name='attribute_id' on_change='on_change_attribute(attribute_id)' domain="[('asset_id','=',asset_id_2)]"/>
-							<field name='attribute_name'/>
-							<field name='attribute_code'/>
+							<field name='attribute_name' readonly='True'/>
+							<field name='attribute_code' readonly='True'/>
 							<field name='collect_type'/>
 							<field name='collect_period'/>
 							<field name='collect_period_count'/>
@@ -359,6 +359,7 @@
 							<field name='install_building' readonly='True'/>
 							<field name='install_building_position' readonly='True'/>
 							<field name='repair_man'/>
+							<field name='repair_time'/>
 							<field name='repair_date'/>
 							<field name='create_time' readonly='True'/>
 							<field name='repairing_time' readonly='True'/>
@@ -410,6 +411,17 @@
 					<field name='finished_time'/>
 					<field name='state'/>
 				</tree>
+			</field>
+		</record>
+
+		<record id='polling_repair_graph_view' model='ir.ui.view'>
+			<field name='name'>polling.repair.graph.view</field>
+			<field name='model'>polling.repair</field>
+			<field name='arch' type='xml'>
+				<graph string='Repair orders'>
+					<field name='asset_id' group='True'/>
+					<field name='repair_time' operator='measure'/>
+				</graph>
 			</field>
 		</record>
 
@@ -585,6 +597,7 @@
 			<field name='type'>ir.actions.act_window</field>
 			<field name='res_model'>polling.repair</field>
 			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form,graph</field>
 			<field name="search_view_id" ref="polling_repair_search_view"/>
 		</record>
 
