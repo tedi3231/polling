@@ -476,13 +476,6 @@
 			<field name='context'>{'is_data_collect':'1'}</field>
         </record>
 
-		<record id="polling_action_rule_show" model="ir.actions.act_window">
-			<field name="name">Collect rules</field>
-			<field name="type">ir.actions.act_window</field>
-			<field name="res_model">polling.rule</field>
-			<field name="view_type">form</field>
-		</record>
-
 		<record id='polling_action_repair_ownasset_show' model='ir.actions.act_window'>
 			<field name='name'>Repairs</field>
 			<field name='type'>ir.actions.act_window</field>
