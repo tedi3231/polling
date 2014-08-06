@@ -271,7 +271,7 @@
 								</field>
 							</page>
 							<page name='collect_ports_page' string='Collect points'>
-								<field name='collect_points'>
+								<field name='collect_points' context="{'collected_asset_id':active_id}">
 									<tree string='Collect points' version='7.0'>
 										<field name='name'/>
 										<field name='asset_id_2'/>
@@ -297,12 +297,12 @@
         	<field name='view_mode'>tree,form</field>
         	<field name='type'>form</field>
         	<field name='arch' type='xml'>
-        		<form version='7.0' string='Collect poing'>
+				<form version='7.0' string='Collect poing'>
         			<sheet>
         				<group col='4'>
         					<field name='name'/>
 							<field name='asset_id_2'/>
-							<field name='attribute_id'/>
+							<field name='attribute_id' on_change='on_change_attribute(attribute_id)' domain="[('asset_id','=',asset_id_2)]"/>
 							<field name='attribute_name'/>
 							<field name='attribute_code'/>
 							<field name='collect_type'/>
@@ -310,6 +310,9 @@
 							<field name='collect_period_count'/>
 							<field name='hasstop'/>
         				</group>
+						<group string='Remark'>
+							<field name='remark' nolabel='1' holdplace='Remark.....'/>
+						</group>
 					</sheet>
         		</form>
         	</field>

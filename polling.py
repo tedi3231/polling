@@ -475,11 +475,11 @@ class polling_asset(osv.osv):
             #    print 'data_collect_group is %s' % node
             #    doc.remove(node)
             for node in doc.xpath("//page[@name='collect_ports_page']"):
-                print 'field is %s' % node
+                #print 'field is %s' % node
                 node.getparent().remove(node)
                 #doc.remove(node)
         result['arch'] = etree.tostring(doc)
-        print result['arch']
+        #print result['arch']
         return result
 
     def onchange_template_get_attributes(self,cr,uid,ids,parentid,context=None):
@@ -559,17 +559,45 @@ COLLECT_TYPES = [
 
 class polling_asset_collectpoint(osv.osv):
     _name = 'polling.asset.collectpoint'
+    
+    def default_get(self, cr, uid, fields_list, context=None):
+        print 'default_get parameters is %s,context is %s ' % (fields_list,context)
+        collected_asset_id = context.get("collected_asset_id",None)
+        default = super(polling_asset_collectpoint, self).default_get(cr, uid, fields_list, context=context)
+        if collected_asset_id:
+            point_item_ids = self.search(cr,uid,[('asset_id','=',collected_asset_id)],[],context=context)
+            print 'has choosed points is %s'%point_item_ids
+            #if point_items:
+            if point_item_ids:
+                point_items = self.read(cr,uid,point_item_ids,[],context=context)
+                print 'point_items is %s' % point_items
+                if point_items:
+                    default['asset_id_2'] = point_items[0]['asset_id_2'][0]
+        return default
+
+    def on_change_attribute(self,cr,uid,ids,attr_id,context=None):
+        attr_rep = self.pool.get('polling.asset.attribute')
+        item = attr_rep.read(cr,uid,attr_id,context=context)
+        print 'collect_points is %s' % item
+        return {
+            'value':{
+                'attribute_name':item['name'],
+                'attribute_code':item['code'],
+            }
+        }
+
     _columns = {
         'name':fields.char(string='Collect name',size=100,required=True),
         'asset_id':fields.many2one('polling.asset',string='Collect Asset'),
         'asset_id_2':fields.many2one('polling.asset',string='Collected Asset'),
-        'attribute_id':fields.many2one('polling.assettemplate.attribute',string='Attribute'),
+        'attribute_id':fields.many2one('polling.asset.attribute',string='Attribute'),
         'attribute_name':fields.related('attribute_id','name',type='char',string='Attribute name',store=True),
         'attribute_code':fields.related('attribute_id','code',type='char',string='Attribute code',store=True),
         'collect_type':fields.selection(COLLECT_TYPES,string="type"),
         'collect_period':fields.integer(string="collect",required=True),
         'collect_period_count':fields.integer(string="count",required=True),
         'hasstop':fields.boolean(string="Hasstop"),
+        'remark':fields.text(string='Remark'),
     }
     _parent_name='asset_id'
 
