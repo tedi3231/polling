@@ -425,6 +425,17 @@
 			</field>
 		</record>
 
+		<record id='polling_repair_calendar_view' model='ir.ui.view'>
+			<field name='name'>Repairs Calendar</field>
+			<field name='model'>polling.repair</field>
+			<field name='arch' type='xml'>
+				<calendar string='Repairs' date_start='repairing_time' date_stop='finished_time' color='repair_man'>
+					<field name='asset_id'/>
+					<field name='name'/>
+				</calendar>
+			</field>
+		</record>
+
 		<record id="polling_repair_search_view" model="ir.ui.view">
             <field name="name">polling.repair.search.view</field>
             <field name="model">polling.repair</field>
@@ -513,6 +524,17 @@
 			</field>
 		</record>
 
+		<record id='polling_maintain_calendar_view' model='ir.ui.view'>
+			<field name='name'>Maintains Calendar</field>
+			<field name='model'>polling.maintain</field>
+			<field name='arch' type='xml'>
+				<calendar string='Maintains' date_start='maintain_date' date_stop='finished_time' color='maintain_man'>
+					<field name='name'/>
+					<field name='asset_id'/>
+				</calendar>
+			</field>
+		</record>
+
 		<record id="polling_maintain_search_view" model="ir.ui.view">
             <field name="name">polling.maintain.search.view</field>
             <field name="model">polling.maintain</field>
@@ -597,7 +619,7 @@
 			<field name='type'>ir.actions.act_window</field>
 			<field name='res_model'>polling.repair</field>
 			<field name='view_type'>form</field>
-			<field name='view_mode'>tree,form,graph</field>
+			<field name='view_mode'>tree,form,calendar,graph</field>
 			<field name="search_view_id" ref="polling_repair_search_view"/>
 		</record>
 
@@ -606,6 +628,7 @@
 			<field name='type'>ir.actions.act_window</field>
 			<field name='res_model'>polling.maintain</field>
 			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form,calendar</field>
 			<field name="search_view_id" ref="polling_maintain_search_view"/>
 		</record>
 
