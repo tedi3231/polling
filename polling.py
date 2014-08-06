@@ -23,7 +23,7 @@ Double   双向
 """
 RELATIONTYPES = [("positive","Positive"),("negative","Negative"),("double","Double")]
 
-class RelationType(osv.osv):
+class polling_relationtype(osv.osv):
     _name = "polling.relationtype"
     _columns = {
         "name":fields.char(string="Name",size=100,required=True),
@@ -33,9 +33,9 @@ class RelationType(osv.osv):
     }
     _sql_constraints = [("code_unique","unique(code)","code must be unique")]
 
-RelationType()
+polling_relationtype()
 
-class AssetTemplateCategory(osv.osv):
+class polling_assettemplatecategory(osv.osv):
     _name="polling.assettemplatecategory"
     _description = "Asset category"
 
@@ -92,7 +92,7 @@ class AssetTemplateCategory(osv.osv):
     _parent_order = 'sequence, name'
     _order = "parent_left"
 
-AssetTemplateCategory()
+polling_assettemplatecategory()
 
 def get_tree_top2low(objname,cr,uid,parent_id,context=None):
     """
@@ -138,7 +138,7 @@ def get_list_from_nestedlist(item):
             res.append(i)
     return res
 
-class AssetTemplate(osv.osv):
+class polling_assettemplate(osv.osv):
     _name="polling.assettemplate"
     _description = "Asset Template"
 
@@ -282,9 +282,9 @@ class AssetTemplate(osv.osv):
     _parent_store = True
     _parent_order = 'sequence, name'
     _order = "parent_left"
-AssetTemplate()
+polling_assettemplate()
 
-class AssetTemplateAttribute(osv.osv):
+class polling_assettemplate_attribute(osv.osv):
     _name="polling.assettemplate.attribute"
 
     def push_attribute(self,cr,uid,ids,context=None):
@@ -334,9 +334,74 @@ class AssetTemplateAttribute(osv.osv):
         #"code":lambda self,cr,uid,context:self.pool.get("ir.sequence").get(cr,uid,"seq.polling.assettemplate.attribute.code")
     }
 
-AssetTemplateAttribute()
+polling_assettemplate_attribute()
 
-class Asset(osv.osv):
+class polling_assettemplate_relation(osv.osv):
+    _name = "polling.assettemplate.relation"
+    
+    _columns = {
+        "assettemplate_id":fields.many2one("polling.assettemplate",string="AssetTemplate"),
+        "relationtype_id":fields.many2one("polling.relationtype",string="Relation Type"),
+        "assettemplate_id2":fields.many2one("polling.assettemplate",string="AssetTemplate To"),
+        "relationtype_id2":fields.many2one("polling.relationtype",string="Relation from type"),
+    }
+
+    _defaults = {
+        #"code":lambda self,cr,uid,context:self.pool.get("ir.sequence").get(cr,uid,"seq.assettemplate.relation.code"),
+    }
+polling_assettemplate_relation()
+
+class polling_assettemplate_action(osv.osv):
+    _name="polling.assettemplate.action"
+    
+    def removeattr(self,cr,uid,ids,context=None):
+        self.unlink(cr,uid,ids,context=context)
+        #return template_id
+        return True
+
+    def push_action(self,cr,uid,ids,context=None):
+        templates = self.read(cr,uid,ids,[],context=context)
+        print "templates is %s "%templates 
+        if not templates:
+            return False
+        template = templates[0]
+        template_id = template["assettemplate_id"][0]
+        res = get_tree_top2low("polling.assettemplate",cr,uid,template_id,context=context)
+        res.append(template_id)
+        #print "push res is %s " % res
+        asset_rep = self.pool.get("polling.asset")
+        asset_ids = asset_rep.search(cr,uid,[("assettemplate_id","in",res)],context=context)
+        print "asset_ids is %s " % asset_ids
+        asset_action_rep = self.pool.get("polling.asset.action")
+        for asset_id in asset_ids:
+            template["asset_id"] = asset_id
+            print "action instance is %s " % template
+            asset_action_rep.create(cr,uid,template,context=context)
+        self.write(cr,uid,ids,{'state':'haspush'},context=context)
+        return True
+    
+    _columns = {
+        "assettemplate_id":fields.many2one("polling.assettemplate",string="Template"),
+        "name":fields.char(string="Name",size=200,required=True,),
+        "code":fields.char(string="Code",size=200,required=True,),
+        "executelevel":fields.selection(SECURITYLEVEL,string="Execute Level"),
+        "estimatetime":fields.integer(string="Estimate Time",required=True,help="Estimate execute time by hour"),
+        "command":fields.text(string="Command",required=True,help="Command template,parameters with {name}"),
+        "ordernum":fields.integer(string="Order",required=True,help="The execute order"),
+        "batch":fields.char(string="Batch",required=False,help="If set batch,must execute together"),
+        "state":fields.selection([("haspush","Pushed"),("nopush","Not Push")],string="State"),
+    }
+    
+    _defaults = {
+        "executelevel":"low",
+        "ordernum":10,
+        "state":"nopush",
+        #"code":lambda self,cr,uid,context:self.pool.get("ir.sequence").get(cr,uid,"seq.assettemplate.action.code")
+    }
+polling_assettemplate_action()
+
+
+class polling_asset(osv.osv):
     _name="polling.asset"
     _description = "Asset"
 
@@ -391,6 +456,67 @@ class Asset(osv.osv):
             'context': "{'default_res_model': '%s','default_res_id': %d}" % (self._name, res_id)
         }
 
+    def default_get(self, cr, uid, fields_list, context=None):
+        print'default_get method context is %s,fields_list is %s' % (context,fields_list)
+        default = super(polling_asset, self).default_get(cr, uid, fields_list, context=context)
+        con = context.get('is_data_collect')
+        default['is_data_collect'] = con=='1'
+        return default
+
+    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+        print 'context is %s ' % context
+        if context is None:
+            context = {}
+        result = super(polling_asset, self).fields_view_get(cr, uid, view_id,  view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)  
+        doc = etree.XML(result['arch'])
+        is_data_collect = context.get('is_data_collect')
+        if view_type=='form' and is_data_collect=='0':
+            #for node in doc.xpath("//group[@name='collect_data_group']"):
+            #    print 'data_collect_group is %s' % node
+            #    doc.remove(node)
+            for node in doc.xpath("//page[@name='collect_ports_page']"):
+                print 'field is %s' % node
+                node.getparent().remove(node)
+                #doc.remove(node)
+        result['arch'] = etree.tostring(doc)
+        print result['arch']
+        return result
+
+    def onchange_template_get_attributes(self,cr,uid,ids,parentid,context=None):
+        result = []
+        action_result = []
+        relation_result = []
+        #parent_ids =  self._get_inherit_tree(cr, uid, ids, parentid, context=context)
+        parent_ids = get_tree_low2top("polling_assettemplate",cr,uid,parentid,context=context) 
+        attr_rep = self.pool.get("polling.assettemplate.attribute")
+        action_rep = self.pool.get("polling.assettemplate.action")
+        relation_rep = self.pool.get("polling.assettemplate.relation")
+
+        attr_ids = attr_rep.search(cr,uid,[('assettemplate_id','in',parent_ids)],context=context)
+        action_ids = action_rep.search(cr,uid,[('assettemplate_id','in',parent_ids)],context=context)
+        relation_ids = relation_rep.search(cr,uid,[('assettemplate_id','in',parent_ids)],context=context)
+        
+        for item in attr_rep.read(cr,uid,attr_ids,[],context=context):
+            item["fromtemplate"] ="yes" #item["yes"]
+            result.append(item)
+            print "attr item is %s " % item
+        
+        for item in action_rep.read(cr,uid,action_ids,[],context=context):
+            action_result.append(item)
+        
+        for item in relation_rep.read(cr,uid,relation_ids,[],context=context):
+            relation_result.append(item)
+            print "relationitem is %s " % item 
+        #result2[ids] = result
+        print "result is %s" % relation_result
+        return  {
+                    "value": {
+                        "attributes" : result,
+                        "actions": action_result,
+                        "relations": relation_result,
+                    }
+        }
+
     _columns = {
         "category_id":fields.many2one("polling.assettemplatecategory",string="Category",select=True),
         "assettemplate_id": fields.many2one('polling.assettemplate',string='Template', select=True, ondelete='cascade'),
@@ -412,40 +538,17 @@ class Asset(osv.osv):
         "attachment_content":fields.text(string="Attachment content"),
         "remark":fields.text(string="Remark"),
         "is_data_collect":fields.boolean(string="Is data collect"),
+        "attributes":fields.one2many("polling.asset.attribute","asset_id",string="Attributes"),
+        "relations":fields.one2many("polling.asset.relation","asset_id",string="Relations"),
+        "actions":fields.one2many("polling.asset.action","asset_id",string="Actions"), 
         'collect_points':fields.one2many('polling.asset.collectpoint','asset_id',string='Collect points'),
     }
-
-    def default_get(self, cr, uid, fields_list, context=None):
-        print'default_get method context is %s,fields_list is %s' % (context,fields_list)
-        default = super(Asset, self).default_get(cr, uid, fields_list, context=context)
-        con = context.get('is_data_collect')
-        default['is_data_collect'] = con=='1'
-        return default
-
-    def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
-        print 'context is %s ' % context
-        if context is None:
-            context = {}
-        result = super(Asset, self).fields_view_get(cr, uid, view_id,  view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)  
-        doc = etree.XML(result['arch'])
-        is_data_collect = context.get('is_data_collect')
-        if view_type=='form' and is_data_collect=='0':
-            #for node in doc.xpath("//group[@name='collect_data_group']"):
-            #    print 'data_collect_group is %s' % node
-            #    doc.remove(node)
-            for node in doc.xpath("//notebook"):
-                print 'field is %s' % node
-                node.getparent().remove(node)
-                #doc.remove(node)
-        result['arch'] = etree.tostring(doc)
-        print result['arch']
-        return result
 
     _defaults = {
         #"code":lambda self,cr,uid,context:self.pool.get("ir.sequence").get(cr,uid,"seq.polling.asset.code"),
         "is_data_collect":False,
     }
-Asset()
+polling_asset()
 
 COLLECT_TYPES = [
     ("second","Second"),
@@ -454,7 +557,7 @@ COLLECT_TYPES = [
     ("day","Day"),
 ]
 
-class AssetCollectPoint(osv.osv):
+class polling_asset_collectpoint(osv.osv):
     _name = 'polling.asset.collectpoint'
     _columns = {
         'name':fields.char(string='Collect name',size=100,required=True),
@@ -469,28 +572,10 @@ class AssetCollectPoint(osv.osv):
         'hasstop':fields.boolean(string="Hasstop"),
     }
     _parent_name='asset_id'
-AssetCollectPoint()
 
-class polling_building(osv.osv):                                                                
-     _name = "polling.building"         
-
-     _columns = {                                                                                    
-         "name":fields.char(string="Name",required=True,size=100),                                   
-         "remark":fields.char(string="Remark",size=500,required=True),                               
-         "positions":fields.one2many("polling.building.position","polling_building_id",strin="Racks"),        
-     }                                                                                               
-polling_building()                                                                              
-                                                                                                     
-class polling_building_position(osv.osv):                                                           
-    _name = "polling.building.position"                                                             
-    _columns = {                                                                                    
-        "name":fields.char(string="Name",size=200,required=True),                                   
-        "polling_building_id":fields.many2one("polling.building",string="Building",required=True),
-        "remark":fields.char(string="Remark",size=500,required=False),                              
-    }                                                                                               
-polling_building_position()                                                                         
+polling_asset_collectpoint()                                                                       
                               
-class AssetAttribute(osv.osv):
+class polling_asset_attribute(osv.osv):
     _name="polling.asset.attribute"
    
     _columns = {
@@ -517,8 +602,115 @@ class AssetAttribute(osv.osv):
         "fromtemplate":"no",
     }
 
-AssetAttribute()
+polling_asset_attribute()
 
+class polling_asset_action(osv.osv):
+    _name="polling.asset.action"
+
+    def _format_action_command(self,cr,uid,asset_id,command,context=None):
+        attr_rep = self.pool.get("polling.asset.attribute")
+        attr_ids = attr_rep.search(cr,uid,[('asset_id','=',asset_id)],context=context)
+        attr_items = attr_rep.read(cr,uid,attr_ids,[],context=context)
+        values = {}
+        for item in attr_items:
+            values[item['code']] = item['defaultvalue']
+        t_cmd = string.Template(command)
+        content = t_cmd.safe_substitute(values)
+        return content
+
+    def get_format_asset_action(self,cr,uid,ids,name,arg,context=None):
+        result = dict.fromkeys(ids,'None')
+        for item in self.read(cr,uid,ids,['id','asset_id','command'],context=context):
+            print "get_format_asset_action item is %s " % item
+            print "type names is %s" % type(self)._name
+            #if type(self)._name != "polling.asset.action.backup":
+            #    result[item["id"]] = self._format_action_command(cr,uid,item["asset_id"][0],item["command"],context=context)
+            print result
+            #result[item["id"]] = "abc"
+        return result
+    
+    _columns = {
+        "asset_id":fields.many2one("polling.asset",string="Asset"),
+        "name":fields.char(string="Name",size=200,required=True,),
+        "code":fields.char(string="Code",size=200,required=True,),
+        "executelevel":fields.selection(SECURITYLEVEL,string="Execute Level"),
+        "estimatetime":fields.integer(string="Estimate Time",required=True,help="Estimate execute time by hour"),
+        "command":fields.text(string="Command",required=True,help="Command template,parameters with {name}"),
+        "cmdcontent":fields.function(get_format_asset_action,string="CMD Content",type="char"),
+        "ordernum":fields.integer(string="Order",required=True,help="The execute order"),
+        "batch":fields.char(string="Batch",required=False,help="If set batch,must execute together"),
+    }
+    
+    _defaults = {
+        "executelevel":"low",
+        "ordernum":10,
+    }
+polling_asset_action()
+
+class polling_asset_relation(osv.osv):
+    _name = "polling.asset.relation"
+   
+    def on_change_asset2(self,cr,uid,ids,asset_id,asset_id2,context=None):
+        print "ids is %s, asset_id is %s, asset_id2 is %s " % (ids,asset_id,asset_id2)
+        if asset_id2 == asset_id:
+            return {
+                "value":{
+                    "asset_id2":None,
+                },
+                "warning":{
+                    "title":"Warning",
+                    "message":"You cannot choose some asset!You must choose another!",
+                }
+            }
+        return {"value":{
+                "asset_id2":asset_id2,
+            }
+        }
+
+    def create(self,cr,uid,data,context=None):
+        print "relation is %s " % data
+        if data["asset_id"] == data["asset_id2"]:
+            raise osv.except_osv(_('Cannot connect to self!'),_("You must select another asset !") )
+            
+        if isinstance(data["relationtype_id"],(list,tuple)):
+            data["relationtype_id"] = data["relationtype_id"][0]
+        print "relation is %s " % data
+        rel_id = super(polling_asset_relation,self).create(cr,uid,data,context=context)
+        #if not rel_id:
+        #    return False
+        #rel_from = {"asset_id":data["asset_id2"],"relationtype_id":data["relationtype_id"],"asset_id2":data["asset_id"]}
+        #print "rel_from is %s " % rel_from
+        #super(AssetRelation,self).create(cr,uid,rel_from,context=context)
+        return rel_id
+
+    _columns = {
+        "asset_id":fields.many2one("polling.asset",string="Asset"),
+        "template_relation_id":fields.integer(string="Template Relation Id"),
+        "relationtype_id":fields.many2one("polling.relationtype",string="Asset to type"),
+        "asset_id2":fields.many2one("polling.asset",string="Asset To"),
+    }
+
+polling_asset_relation()
+
+
+class polling_building(osv.osv):                                                                
+     _name = "polling.building"         
+
+     _columns = {                                                                                    
+         "name":fields.char(string="Name",required=True,size=100),                                   
+         "remark":fields.char(string="Remark",size=500,required=True),                               
+         "positions":fields.one2many("polling.building.position","polling_building_id",strin="Racks"),        
+     }                                                                                               
+polling_building()                                                                              
+                                                                                                     
+class polling_building_position(osv.osv):                                                           
+    _name = "polling.building.position"                                                             
+    _columns = {                                                                                    
+        "name":fields.char(string="Name",size=200,required=True),                                   
+        "polling_building_id":fields.many2one("polling.building",string="Building",required=True),
+        "remark":fields.char(string="Remark",size=500,required=False),                              
+    }                                                                                               
+polling_building_position()  
 
 class polling_repair(osv.osv):
     _name = "polling.repair"

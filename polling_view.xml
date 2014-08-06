@@ -51,9 +51,10 @@
                 <form string="Category" version="7.0">
                     <sheet>
                         <group col="4">
+                        	<field name="name"/>
                             <field name="code"/> 
                             <field name="category_id"/>
-                            <field name="name" colspan="4"/>
+                            <field name="parent_id" on_change="onchange_parent_get_inherit_attributes(parent_id)"/>
                         </group>
                         <group col="4" string="Remark">
                                 <field name="description" placeholder="Remark...." colspan="4" nolabel="1"/>
@@ -73,7 +74,68 @@
 										  <button name="push_attribute" type="object" string="Push" icon="gtk-go-forward" states="nopush" />
 									 </tree> 
 								</field>
-							</page>                        
+							</page>      
+							<page string="Actions" invisible='1'>
+								<field name="actions">
+									<tree string="Actions" version="7.0" editable="bottom">
+										<field name="name"/>
+										<field name="code" readonly="True"/>
+										<field name="executelevel"/>
+										<field name="estimatetime"/>
+										<field name="ordernum"/>
+										<field name="batch"/>
+										<field name="command"/>
+										<field name="state"/>
+										<button name="push_action" type="object" string="Push" icon="gtk-go-forward" states="nopush" />
+									</tree> 
+								</field>
+							</page>
+							<page string="Relations" invisible='1'>
+								<field name="relations">
+									<tree string="Relations" version="7.0" editable="bottom">
+										<field name="relationtype_id"/>
+										<field name="assettemplate_id2"/>
+										<field name="relationtype_id2"/>
+									</tree>
+								</field>
+							</page>
+                            <page string="Inherit Attributes">
+                                <field name="inherit_attributes">
+                                    <tree string="Inherit Attributes" version="7.0" >
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="tooltip"/>
+                                        <field name="securitylevel"/>
+                                        <field name="datatype"/>
+                                        <field name="controltype"/>
+                                        <field name="sourcefrom"/>
+                                        <field name="sourcetype"/>
+                                        <field name="defaultvalue"/>                                       
+                                    </tree>
+                                </field>
+							</page>
+							<page string="Inherit Actions" invisible='1'>
+								<field name="inherit_actions">
+									<tree string="Inherit Actions" version="7.0">
+										<field name="name"/>
+										<field name="code"/>
+										<field name="executelevel"/>
+										<field name="estimatetime"/>
+										<field name="ordernum"/>
+										<field name="batch"/>
+										<field name="command"/>
+									</tree>
+								</field> 
+							</page>
+							<page string="Inherit Relations" invisible='1'>
+								<field name="inherit_relations">
+									<tree string="Inherit Relations" version="7.0">
+										<field name="relationtype_id"/>
+										<field name="assettemplate_id2"/>
+										<field name="relationtype_id2"/>
+									</tree>
+								</field>
+							</page>                  
 						</notebook>
 					</sheet>
 				</form>
@@ -152,7 +214,7 @@
                         <group col="4">
 							<!--<field name="assettemplate_id" on_change="onchange_parent_get_inherit_attributes(assettemplate_id)"/>-->
 							<field name="category_id"/>
-                            <field name="assettemplate_id" domain="[('category_id','=',category_id)]"/>
+                            <field name="assettemplate_id" domain="[('category_id','=',category_id)]" on_change="onchange_template_get_attributes(assettemplate_id)"/>
                             <field name="code"/>
                             <field name="name"/>
 							<field name="specification"/>
@@ -168,31 +230,62 @@
 							<field name="asset_used" colspan="4"/>
 							<field name="is_data_collect" colspan="4" invisible='1'/>
 						</group>
-						<group name='collect_data_group'>
-							<notebook>
-								<page string='Collect points'>
-									<field name='collect_points'>
-										<tree string='Collect points' version='7.0'>
-											<field name='name'/>
-											<field name='asset_id_2'/>
-											<field name='attribute_id'/>
-											<field name='attribute_name'/>
-											<field name='attribute_code'/>
-											<field name='collect_type'/>
-											<field name='collect_period'/>
-											<field name='collect_period_count'/>
-											<field name='hasstop'/>
-										</tree>
-									</field>
-								</page>
-							</notebook>
-						</group>
-						<group col="4" string="Attachment content">
-							<field name="attachment_content" placeholder="Attachment content" nolabel="1" colspan="4"/>
-						</group>
 						<group col="4" string="Remark">
 							<field name="remark" placeholder="Remark...." colspan="4" nolabel="1"/>
 						</group>
+						<notebook>
+							<page string="Attributes">
+								<field name="attributes">
+									<tree string="Attributes" version="7.0" delete="0">
+										  <field name="code"/>
+										  <field name="name"/>
+										  <field name="datatype"/>
+										  <field name="controltype"/>
+										  <field name="defaultvalue"/>
+										  <field name="high"/>
+										  <field name="low"/>
+										  
+									  </tree> 
+								  </field>
+							</page>                        
+							<page string="Relations" invisible='1'>
+								<field name="relations">
+									<tree string="Relations" version="7.0" editable="bottom">
+										<field name="relationtype_id"/>
+										<field name="asset_id2" on_change="on_change_asset2(parent.id,asset_id2)"/>
+									</tree>
+								</field>
+							</page>
+							<page string="Actions" invisible='1'>
+								<field name="actions">
+									<tree string="Actions" version="7.0" editable="bottom">
+										<field name="name"/>
+										<field name="code"/>
+										<field name="executelevel"/>
+										<field name="estimatetime"/>
+										<field name="ordernum"/>
+										<field name="batch"/>
+										<field name="command"/>
+										<field name="cmdcontent"/>
+									</tree> 
+								</field>
+							</page>
+							<page name='collect_ports_page' string='Collect points'>
+								<field name='collect_points'>
+									<tree string='Collect points' version='7.0'>
+										<field name='name'/>
+										<field name='asset_id_2'/>
+										<field name='attribute_id'/>
+										<field name='attribute_name'/>
+										<field name='attribute_code'/>
+										<field name='collect_type'/>
+										<field name='collect_period'/>
+										<field name='collect_period_count'/>
+										<field name='hasstop'/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
                     </sheet>
                 </form>
             </field>
