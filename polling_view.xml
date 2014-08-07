@@ -318,6 +318,28 @@
         	</field>
         </record> 
         
+        <record id="polling_asset_collect_record_list_view" model="ir.ui.view">
+            <field name="name">polling.asset.collect.record.list</field>
+            <field name="model">polling.asset.collect.record</field>
+            <field name="priority">1</field>
+            <field name="view_mode">tree,form</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+				<tree string="Collect records">
+					<field name="asset_id"/>
+					<field name='asset_attr_name'/>
+                    <field name="asset_attr_code"/>
+                    <field name="asset_attr_high"/>
+					<field name='asset_attr_low'/>
+					<field name='collect_point_id'/>
+					<field name='collect_asset_id'/>
+					<field name='collect_value'/>
+					<field name='collect_time'/>
+					<field name='state'/>
+                </tree>
+            </field>
+        </record>
+
         <record id="polling_asset_list_view" model="ir.ui.view">
             <field name="name">polling.asset.list</field>
             <field name="model">polling.asset</field>
@@ -606,6 +628,13 @@
 			<field name='context'>{'is_data_collect':'1'}</field>
         </record>
 
+		<record id='polling_action_asset_collect_record_show' model='ir.actions.act_window'>
+			<field name='name'>Collect records</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.asset.collect.record</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+
 		<record id='polling_action_repair_ownasset_show' model='ir.actions.act_window'>
 			<field name='name'>Repairs</field>
 			<field name='type'>ir.actions.act_window</field>
@@ -643,5 +672,7 @@
 		<menuitem id="menu_polling_maintain_manager" action="polling_action_maintain_show" name="设备保养登记" parent="menu_polling_maintain_root" sequence="40"/>
 		<menuitem id="menu_polling_products_category_manager" action="product.product_category_action_form"  name="备件类别管理" parent="menu_polling_maintain_root" sequence="40"/>
 		<menuitem id="menu_polling_products_manager" action="product.product_normal_action_sell"  name="设备备件管理" parent="menu_polling_maintain_root" sequence="40"/>
+		<menuitem id="menu_polling_collect_root" name="设备巡检管理" parent="menu_polling_root" sequence="40"/>
+		<menuitem id="menu_polling_collect_record_manager" action="polling_action_asset_collect_record_show" name="设备巡检记录" parent="menu_polling_collect_root" sequence="40"/>
 	</data>
 </openerp>

@@ -602,6 +602,23 @@ class polling_asset_collectpoint(osv.osv):
     _parent_name='asset_id'
 
 polling_asset_collectpoint()                                                                       
+
+class polling_asset_collect_record(osv.osv):
+    _name = 'polling.asset.collect.record'
+    _columns = {
+        'asset_id':fields.many2one('polling.asset',string='Asset'),
+        'asset_attr_id':fields.many2one('polling.asset.attribute',string='Attribute'),
+        'asset_attr_name':fields.related('asset_attr_id','name',type='char',string='Attribute name'),
+        'asset_attr_code':fields.related('asset_attr_id','code',type='char',string='Attribute code'),
+        'asset_attr_high':fields.related('asset_attr_id','high',type='char',string='High'),
+        'asset_attr_low':fields.related('asset_attr_id','low',type='char',string='Low'),
+        'collect_point_id':fields.many2one('polling.asset.collectpoint',string='Collect point'),
+        'collect_asset_id':fields.related('collect_point_id','asset_id',type='many2one',relation='polling.asset',string='Collect asset'),
+        'collect_value':fields.char(string='Collect value',size=100),
+        'collect_time':fields.datetime(string='Collect time'),
+        'state':fields.selection([('normal','Normal'),('lost','Lost'),('over','Over')],string='Status'),
+    }
+polling_asset_collect_record()
                               
 class polling_asset_attribute(osv.osv):
     _name="polling.asset.attribute"
