@@ -1,0 +1,1169 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* polling
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130205-000102\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-09 02:40+0000\n"
+"PO-Revision-Date: 2014-08-09 02:40+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_relationtype
+msgid "polling.relationtype"
+msgstr "polling.relationtype"
+
+#. module: polling
+#: view:polling.repair:0
+#: field:polling.repair,polling_repair_lines:0
+msgid "Repair lines"
+msgstr "Repair lines"
+
+#. module: polling
+#: help:polling.assettemplate,description:0
+msgid "Description the target of template"
+msgstr "Description the target of template"
+
+#. module: polling
+#: view:polling.repair:0
+msgid "Start repairing"
+msgstr "Start repairing"
+
+#. module: polling
+#: field:polling.asset,producingarea:0
+msgid "Producting Area"
+msgstr "Producting Area"
+
+#. module: polling
+#: view:polling.repair:0
+msgid "Repair reason"
+msgstr "Repair reason"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_asset_show
+#: model:ir.model,name:polling.model_polling_asset
+#: view:polling.asset:0
+#: field:polling.asset.action,asset_id:0
+#: field:polling.asset.attribute,asset_id:0
+#: field:polling.asset.collect.record,asset_id:0
+#: field:polling.asset.relation,asset_id:0
+#: view:polling.maintain:0
+#: field:polling.maintain,asset_id:0
+#: field:polling.repair,asset_id:0
+msgid "Asset"
+msgstr "Asset"
+
+#. module: polling
+#: view:polling.asset:0
+#: field:polling.asset,assettemplate_id:0
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate.action,assettemplate_id:0
+#: field:polling.assettemplate.attribute,assettemplate_id:0
+msgid "Template"
+msgstr "Template"
+
+#. module: polling
+#: field:polling.asset.collectpoint,hasstop:0
+msgid "Hasstop"
+msgstr "Hasstop"
+
+#. module: polling
+#: field:polling.asset.attribute,datatype:0
+#: field:polling.assettemplate.attribute,datatype:0
+msgid "Data Type"
+msgstr "Data Type"
+
+#. module: polling
+#: field:polling.asset,asset_used:0
+msgid "Asset used"
+msgstr "Asset used"
+
+#. module: polling
+#: field:polling.relationtype,direction:0
+msgid "Direction"
+msgstr "Direction"
+
+#. module: polling
+#: field:polling.assettemplate,parent_id:0
+#: view:polling.assettemplatecategory:0
+#: field:polling.assettemplatecategory,parent_id:0
+msgid "Parent"
+msgstr "Parent"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_collect_root
+msgid "设备巡检管理"
+msgstr "设备巡检管理"
+
+#. module: polling
+#: field:polling.asset,brand:0
+msgid "Brand"
+msgstr "Brand"
+
+#. module: polling
+#: field:polling.asset.relation,relationtype_id:0
+msgid "Asset to type"
+msgstr "Asset to type"
+
+#. module: polling
+#: field:polling.repair,repair_time:0
+msgid "Repair time"
+msgstr "Repair time"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_asset_relation
+msgid "polling.asset.relation"
+msgstr "polling.asset.relation"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_products_manager
+msgid "设备备件管理"
+msgstr "设备备件管理"
+
+#. module: polling
+#: selection:polling.asset.collectpoint,collect_type:0
+msgid "Day"
+msgstr "Day"
+
+#. module: polling
+#: field:polling.asset,install_building_id:0
+#: field:polling.building.position,polling_building_id:0
+#: field:polling.maintain,install_building:0
+#: field:polling.repair,install_building:0
+msgid "Building"
+msgstr "Building"
+
+#. module: polling
+#: view:polling.asset:0
+#: field:polling.asset,remark:0
+#: field:polling.asset.attribute,remark:0
+#: view:polling.asset.collectpoint:0
+#: field:polling.asset.collectpoint,remark:0
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,remark:0
+#: view:polling.assettemplate.attribute:0
+#: field:polling.assettemplate.attribute,remark:0
+#: view:polling.assettemplatecategory:0
+#: field:polling.assettemplatecategory,remark:0
+#: field:polling.building,remark:0
+#: field:polling.building.position,remark:0
+#: view:polling.maintain:0
+#: field:polling.maintain,remark:0
+#: view:polling.repair:0
+#: field:polling.repair,remark:0
+msgid "Remark"
+msgstr "Remark"
+
+#. module: polling
+#: view:polling.asset.collectpoint:0
+msgid "Collect poing"
+msgstr "Collect poing"
+
+#. module: polling
+#: view:polling.repair:0
+msgid "Repair"
+msgstr "Repair"
+
+#. module: polling
+#: field:polling.asset.relation,asset_id2:0
+msgid "Asset To"
+msgstr "Asset To"
+
+#. module: polling
+#: field:polling.asset.action,estimatetime:0
+#: field:polling.assettemplate.action,estimatetime:0
+msgid "Estimate Time"
+msgstr "Estimate Time"
+
+#. module: polling
+#: field:polling.asset.action,batch:0
+#: field:polling.assettemplate.action,batch:0
+msgid "Batch"
+msgstr "Batch"
+
+#. module: polling
+#: field:polling.assettemplate.relation,relationtype_id2:0
+msgid "Relation from type"
+msgstr "Relation from type"
+
+#. module: polling
+#: view:polling.maintain:0
+msgid "Maintain"
+msgstr "Maintain"
+
+#. module: polling
+#: field:polling.asset.collect.record,collect_point_id:0
+msgid "Collect point"
+msgstr "Collect point"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_templateattribute_show
+#: view:polling.asset:0
+#: field:polling.asset,attributes:0
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,attributes:0
+msgid "Attributes"
+msgstr "Attributes"
+
+#. module: polling
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,inherit_attributes:0
+msgid "Inherit Attributes"
+msgstr "Inherit Attributes"
+
+#. module: polling
+#: help:polling.asset.attribute,code:0
+#: help:polling.assettemplate.attribute,code:0
+msgid "unique"
+msgstr "unique"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_asset_collectpoint
+msgid "polling.asset.collectpoint"
+msgstr "polling.asset.collectpoint"
+
+#. module: polling
+#: field:polling.assettemplate,parent_left:0
+#: field:polling.assettemplatecategory,parent_left:0
+msgid "Left parent"
+msgstr "Left parent"
+
+#. module: polling
+#: help:polling.asset.action,estimatetime:0
+#: help:polling.assettemplate.action,estimatetime:0
+msgid "Estimate execute time by hour"
+msgstr "Estimate execute time by hour"
+
+#. module: polling
+#: selection:polling.asset.collect.record,state:0
+msgid "Over"
+msgstr "Over"
+
+#. module: polling
+#: view:polling.repair:0
+#: field:polling.repair,repair_method:0
+msgid "Repair method"
+msgstr "Repair method"
+
+#. module: polling
+#: selection:polling.asset.attribute,controltype:0
+#: selection:polling.assettemplate.attribute,controltype:0
+msgid "RadioList"
+msgstr "RadioList"
+
+#. module: polling
+#: view:polling.maintain:0
+msgid "Start maintaining"
+msgstr "Start maintaining"
+
+#. module: polling
+#: field:polling.asset.attribute,securitylevel:0
+#: field:polling.assettemplate.attribute,securitylevel:0
+msgid "Security Level"
+msgstr "Security Level"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_collect_asset_manager
+msgid "采集设备管理"
+msgstr "采集设备管理"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_asset_action
+msgid "polling.asset.action"
+msgstr "polling.asset.action"
+
+#. module: polling
+#: field:polling.maintain.line,type:0
+#: field:polling.repair.line,type:0
+msgid "Operation"
+msgstr "Operation"
+
+#. module: polling
+#: help:polling.asset.action,batch:0
+#: help:polling.assettemplate.action,batch:0
+msgid "If set batch,must execute together"
+msgstr "If set batch,must execute together"
+
+#. module: polling
+#: help:polling.asset.action,ordernum:0
+#: help:polling.assettemplate.action,ordernum:0
+msgid "The execute order"
+msgstr "The execute order"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_asset_collect_record_show
+#: view:polling.asset.collect.record:0
+msgid "Collect records"
+msgstr "Collect records"
+
+#. module: polling
+#: field:polling.asset,attachment_content:0
+msgid "Attachment content"
+msgstr "Attachment content"
+
+#. module: polling
+#: selection:polling.asset.attribute,controltype:0
+#: selection:polling.assettemplate.attribute,controltype:0
+msgid "CheckBox"
+msgstr "CheckBox"
+
+#. module: polling
+#: code:addons/polling/polling.py:718
+#, python-format
+msgid "You must select another asset !"
+msgstr "You must select another asset !"
+
+#. module: polling
+#: field:polling.asset.collect.record,asset_attr_code:0
+#: field:polling.asset.collectpoint,attribute_code:0
+msgid "Attribute code"
+msgstr "Attribute code"
+
+#. module: polling
+#: field:polling.asset,specification:0
+#: field:polling.maintain,asset_specification:0
+#: field:polling.repair,asset_specification:0
+msgid "Specification"
+msgstr "Specification"
+
+#. module: polling
+#: field:polling.repair,fault_reason:0
+msgid "Fault reason"
+msgstr "Fault reason"
+
+#. module: polling
+#: selection:polling.relationtype,direction:0
+msgid "Negative"
+msgstr "Negative"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_repair_manager
+msgid "设备维修登记"
+msgstr "设备维修登记"
+
+#. module: polling
+#: field:polling.asset.collect.record,collect_value:0
+msgid "Collect value"
+msgstr "Collect value"
+
+#. module: polling
+#: help:polling.asset,code:0
+#: help:polling.assettemplate,code:0
+msgid "Code must be unique"
+msgstr "Code must be unique"
+
+#. module: polling
+#: field:polling.asset.attribute,fromtemplate:0
+msgid "FromTemplate"
+msgstr "FromTemplate"
+
+#. module: polling
+#: field:polling.maintain,name:0
+msgid "Maintain number"
+msgstr "Maintain number"
+
+#. module: polling
+#: view:polling.maintain:0
+#: field:polling.maintain,polling_maintain_lines:0
+msgid "Maintain lines"
+msgstr "Maintain lines"
+
+#. module: polling
+#: view:polling.maintain:0
+#: view:polling.repair:0
+msgid "Start date"
+msgstr "Start date"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_maintain_line
+msgid "polling.maintain.line"
+msgstr "polling.maintain.line"
+
+#. module: polling
+#: field:polling.asset,dateofproduced:0
+msgid "Date of produced"
+msgstr "Date of produced"
+
+#. module: polling
+#: selection:polling.asset.collectpoint,collect_type:0
+msgid "Second"
+msgstr "Second"
+
+#. module: polling
+#: field:polling.maintain,finished_time:0
+msgid "Finish maintain time"
+msgstr "Finish maintain time"
+
+#. module: polling
+#: selection:polling.asset.attribute,datatype:0
+#: selection:polling.asset.attribute,sourcetype:0
+#: selection:polling.assettemplate.attribute,datatype:0
+#: selection:polling.assettemplate.attribute,sourcetype:0
+msgid "String"
+msgstr "String"
+
+#. module: polling
+#: field:polling.asset.collectpoint,collect_period:0
+msgid "collect"
+msgstr "collect"
+
+#. module: polling
+#: view:polling.asset:0
+msgid "Search Asset"
+msgstr "Search Asset"
+
+#. module: polling
+#: view:polling.maintain:0
+#: field:polling.maintain,maintain_method:0
+msgid "Maintain method"
+msgstr "Maintain method"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_repair_ownasset_show
+#: model:ir.actions.act_window,name:polling.polling_action_repair_show
+#: view:polling.asset:0
+#: view:polling.repair:0
+msgid "Repairs"
+msgstr "Repairs"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_relationtype_show
+#: field:polling.assettemplate.relation,relationtype_id:0
+msgid "Relation Type"
+msgstr "Relation Type"
+
+#. module: polling
+#: field:polling.maintain.line,product_qty:0
+#: field:polling.repair.line,product_qty:0
+msgid "Product Qty"
+msgstr "Product Qty"
+
+#. module: polling
+#: code:addons/polling/polling.py:414
+#, python-format
+msgid "Maintain orders"
+msgstr "Maintain orders"
+
+#. module: polling
+#: field:polling.asset.collectpoint,name:0
+msgid "Collect name"
+msgstr "Collect name"
+
+#. module: polling
+#: selection:polling.asset.collectpoint,collect_type:0
+msgid "Minute"
+msgstr "Minute"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_building
+msgid "polling.building"
+msgstr "polling.building"
+
+#. module: polling
+#: field:polling.repair,repair_date:0
+msgid "Repair date"
+msgstr "Repair date"
+
+#. module: polling
+#: selection:polling.asset.collectpoint,collect_type:0
+msgid "Hour"
+msgstr "Hour"
+
+#. module: polling
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,inherit_relations:0
+msgid "Inherit Relations"
+msgstr "Inherit Relations"
+
+#. module: polling
+#: help:polling.asset.action,command:0
+#: help:polling.assettemplate.action,command:0
+msgid "Command template,parameters with {name}"
+msgstr "Command template,parameters with {name}"
+
+#. module: polling
+#: selection:polling.maintain,state:0
+#: selection:polling.repair,state:0
+msgid "Wait confirm"
+msgstr "Wait confirm"
+
+#. module: polling
+#: field:polling.asset.action,command:0
+#: field:polling.assettemplate.action,command:0
+msgid "Command"
+msgstr "Command"
+
+#. module: polling
+#: selection:polling.assettemplate.action,state:0
+#: selection:polling.assettemplate.attribute,state:0
+msgid "Not Push"
+msgstr "Not Push"
+
+#. module: polling
+#: constraint:polling.assettemplate:0
+#: constraint:polling.assettemplatecategory:0
+msgid "错误！您不能循环创建目录."
+msgstr "错误！您不能循环创建目录."
+
+#. module: polling
+#: field:polling.maintain,maintaining_time:0
+msgid "Start maintain time"
+msgstr "Start maintain time"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_root
+msgid "楼宇巡检"
+msgstr "楼宇巡检"
+
+#. module: polling
+#: field:polling.assettemplate,complete_name:0
+#: field:polling.assettemplatecategory,complete_name:0
+msgid "Full Name"
+msgstr "Full Name"
+
+#. module: polling
+#: field:polling.assettemplate.relation,assettemplate_id2:0
+msgid "AssetTemplate To"
+msgstr "AssetTemplate To"
+
+#. module: polling
+#: code:addons/polling/polling.py:431
+#, python-format
+msgid "Reparir orders"
+msgstr "Reparir orders"
+
+#. module: polling
+#: field:polling.maintain,create_time:0
+#: field:polling.repair,create_time:0
+msgid "Create time"
+msgstr "Create time"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_template_root
+msgid "基础数据管理"
+msgstr "基础数据管理"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_asset_attribute
+msgid "polling.asset.attribute"
+msgstr "polling.asset.attribute"
+
+#. module: polling
+#: view:polling.asset:0
+msgid "Group By...."
+msgstr "Group By...."
+
+#. module: polling
+#: field:polling.maintain,asset_code:0
+#: field:polling.repair,asset_code:0
+msgid "Asset Code"
+msgstr "Asset Code"
+
+#. module: polling
+#: view:polling.maintain:0
+msgid "Group by..."
+msgstr "Group by..."
+
+#. module: polling
+#: field:polling.asset,dateofinstalled:0
+msgid "Date of installed"
+msgstr "Date of installed"
+
+#. module: polling
+#: selection:polling.asset.attribute,fromtemplate:0
+msgid "Yes"
+msgstr "Yes"
+
+#. module: polling
+#: field:polling.asset.attribute,tooltip:0
+#: field:polling.assettemplate.attribute,tooltip:0
+msgid "Tool Tip"
+msgstr "Tool Tip"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.aasettemplatecategory_category_action
+#: field:polling.asset,category_id:0
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,category_id:0
+#: view:polling.assettemplatecategory:0
+#: field:polling.maintain,category_id:0
+#: field:polling.repair,category_id:0
+msgid "Category"
+msgstr "Category"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_assettemplate_attribute
+msgid "polling.assettemplate.attribute"
+msgstr "polling.assettemplate.attribute"
+
+#. module: polling
+#: selection:polling.asset.attribute,fromtemplate:0
+msgid "No"
+msgstr "No"
+
+#. module: polling
+#: field:polling.repair,finished_time:0
+msgid "Finish repairing time"
+msgstr "Finish repairing time"
+
+#. module: polling
+#: view:polling.asset:0
+#: field:polling.asset,relations:0
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,relations:0
+msgid "Relations"
+msgstr "Relations"
+
+#. module: polling
+#: selection:polling.maintain.line,type:0
+#: selection:polling.repair.line,type:0
+msgid "Add"
+msgstr "Add"
+
+#. module: polling
+#: code:addons/polling/polling.py:448
+#: view:polling.asset:0
+#, python-format
+msgid "Documents"
+msgstr "Documents"
+
+#. module: polling
+#: selection:polling.asset.action,executelevel:0
+#: field:polling.asset.attribute,low:0
+#: selection:polling.asset.attribute,securitylevel:0
+#: field:polling.asset.collect.record,asset_attr_low:0
+#: selection:polling.assettemplate.action,executelevel:0
+#: field:polling.assettemplate.attribute,low:0
+#: selection:polling.assettemplate.attribute,securitylevel:0
+msgid "Low"
+msgstr "Low"
+
+#. module: polling
+#: field:polling.maintain.line,polling_repair_id:0
+#: field:polling.repair.line,polling_repair_id:0
+msgid "Repair Order"
+msgstr "Repair Order"
+
+#. module: polling
+#: selection:polling.asset.attribute,controltype:0
+#: selection:polling.assettemplate.attribute,controltype:0
+msgid "Input"
+msgstr "Input"
+
+#. module: polling
+#: help:polling.assettemplate,sequence:0
+#: help:polling.assettemplatecategory,sequence:0
+msgid "Gives the sequence order when displaying a list of product                                                              categories."
+msgstr "Gives the sequence order when displaying a list of product                                                              categories."
+
+#. module: polling
+#: field:polling.asset.collect.record,state:0
+#: field:polling.maintain,state:0
+#: field:polling.repair,state:0
+msgid "Status"
+msgstr "Status"
+
+#. module: polling
+#: selection:polling.maintain,state:0
+#: selection:polling.repair,state:0
+msgid "Reparing"
+msgstr "Reparing"
+
+#. module: polling
+#: field:polling.asset,install_position_id:0
+#: field:polling.maintain,install_building_position:0
+#: field:polling.repair,install_building_position:0
+msgid "Position"
+msgstr "Position"
+
+#. module: polling
+#: selection:polling.asset.collect.record,state:0
+msgid "Normal"
+msgstr "Normal"
+
+#. module: polling
+#: field:polling.building,positions:0
+msgid "unknown"
+msgstr "unknown"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_templatecategory_manager
+msgid "设备分组"
+msgstr "设备分组"
+
+#. module: polling
+#: field:polling.maintain.line,polling_maintain_id:0
+msgid "Maintain Order"
+msgstr "Maintain Order"
+
+#. module: polling
+#: selection:polling.asset.attribute,datatype:0
+#: selection:polling.asset.attribute,sourcetype:0
+#: selection:polling.assettemplate.attribute,datatype:0
+#: selection:polling.assettemplate.attribute,sourcetype:0
+msgid "Integer"
+msgstr "Integer"
+
+#. module: polling
+#: field:polling.asset.collectpoint,collect_type:0
+msgid "type"
+msgstr "type"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_assettemplate
+msgid "Asset Template"
+msgstr "Asset Template"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_assettemplate_show
+#: field:polling.assettemplate.relation,assettemplate_id:0
+msgid "AssetTemplate"
+msgstr "AssetTemplate"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_repair_line
+msgid "polling.repair.line"
+msgstr "polling.repair.line"
+
+#. module: polling
+#: selection:polling.asset.attribute,datatype:0
+#: selection:polling.asset.attribute,sourcetype:0
+#: selection:polling.assettemplate.attribute,datatype:0
+#: selection:polling.assettemplate.attribute,sourcetype:0
+msgid "Decimal"
+msgstr "Decimal"
+
+#. module: polling
+#: field:polling.repair,name:0
+msgid "Repair Number"
+msgstr "Repair Number"
+
+#. module: polling
+#: view:polling.maintain:0
+#: field:polling.maintain,maintain_reason:0
+msgid "Maintain reason"
+msgstr "Maintain reason"
+
+#. module: polling
+#: field:polling.asset,service_life:0
+msgid "Service life"
+msgstr "Service life"
+
+#. module: polling
+#: field:polling.maintain,maintain_time:0
+msgid "Maitain time"
+msgstr "Maitain time"
+
+#. module: polling
+#: view:polling.assettemplate:0
+msgid "Push"
+msgstr "Push"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_products_category_manager
+msgid "备件类别管理"
+msgstr "备件类别管理"
+
+#. module: polling
+#: field:polling.asset.attribute,sourcefrom:0
+#: field:polling.assettemplate.attribute,sourcefrom:0
+msgid "Value Source"
+msgstr "Value Source"
+
+#. module: polling
+#: field:polling.asset.collectpoint,collect_period_count:0
+msgid "count"
+msgstr "count"
+
+#. module: polling
+#: view:polling.maintain:0
+#: view:polling.repair:0
+msgid "End date"
+msgstr "End date"
+
+#. module: polling
+#: field:polling.asset,code:0
+#: field:polling.asset.action,code:0
+#: field:polling.asset.attribute,code:0
+#: field:polling.assettemplate,code:0
+#: field:polling.assettemplate.action,code:0
+#: field:polling.assettemplate.attribute,code:0
+#: field:polling.relationtype,code:0
+msgid "Code"
+msgstr "Code"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_building_position
+msgid "polling.building.position"
+msgstr "polling.building.position"
+
+#. module: polling
+#: field:polling.asset.relation,template_relation_id:0
+msgid "Template Relation Id"
+msgstr "Template Relation Id"
+
+#. module: polling
+#: field:polling.asset.collect.record,asset_attr_id:0
+#: field:polling.asset.collectpoint,attribute_id:0
+#: view:polling.assettemplate.attribute:0
+msgid "Attribute"
+msgstr "Attribute"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_asset_manager
+msgid "设备台账管理"
+msgstr "设备台账管理"
+
+#. module: polling
+#: field:polling.assettemplate.action,state:0
+#: field:polling.assettemplate.attribute,state:0
+msgid "State"
+msgstr "State"
+
+#. module: polling
+#: field:polling.asset.collect.record,asset_attr_name:0
+#: field:polling.asset.collectpoint,attribute_name:0
+msgid "Attribute name"
+msgstr "Attribute name"
+
+#. module: polling
+#: view:polling.asset:0
+#: field:polling.asset,collect_points:0
+msgid "Collect points"
+msgstr "Collect points"
+
+#. module: polling
+#: view:polling.maintain:0
+msgid "Finish maintaining"
+msgstr "Finish maintaining"
+
+#. module: polling
+#: field:polling.assettemplate,child_id:0
+#: field:polling.assettemplatecategory,child_id:0
+msgid "Children"
+msgstr "Children"
+
+#. module: polling
+#: selection:polling.asset.attribute,controltype:0
+#: selection:polling.assettemplate.attribute,controltype:0
+msgid "DropDownList"
+msgstr "DropDownList"
+
+#. module: polling
+#: field:polling.maintain,maintain_date:0
+msgid "Maintain date"
+msgstr "Maintain date"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_maintain_manager
+msgid "设备保养登记"
+msgstr "设备保养登记"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_repair
+msgid "polling.repair"
+msgstr "polling.repair"
+
+#. module: polling
+#: selection:polling.relationtype,direction:0
+msgid "Positive"
+msgstr "Positive"
+
+#. module: polling
+#: field:polling.asset.collect.record,collect_asset_id:0
+msgid "Collect asset"
+msgstr "Collect asset"
+
+#. module: polling
+#: field:polling.asset.attribute,sourcetype:0
+#: field:polling.assettemplate.attribute,sourcetype:0
+msgid "Source Type"
+msgstr "Source Type"
+
+#. module: polling
+#: code:addons/polling/polling.py:718
+#, python-format
+msgid "Cannot connect to self!"
+msgstr "Cannot connect to self!"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_assettemplate_relation
+msgid "polling.assettemplate.relation"
+msgstr "polling.assettemplate.relation"
+
+#. module: polling
+#: field:polling.assettemplate,haspush:0
+msgid "Has Push"
+msgstr "Has Push"
+
+#. module: polling
+#: field:polling.asset.action,executelevel:0
+#: field:polling.assettemplate.action,executelevel:0
+msgid "Execute Level"
+msgstr "Execute Level"
+
+#. module: polling
+#: field:polling.asset.attribute,controltype:0
+#: field:polling.assettemplate.attribute,controltype:0
+msgid "Control Type"
+msgstr "Control Type"
+
+#. module: polling
+#: field:polling.maintain.line,product_id:0
+#: field:polling.repair.line,product_id:0
+msgid "Product"
+msgstr "Product"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_maintain_root
+msgid "设备维护管理"
+msgstr "设备维护管理"
+
+#. module: polling
+#: field:polling.assettemplate,description:0
+#: field:polling.maintain.line,name:0
+#: field:polling.relationtype,description:0
+#: field:polling.repair.line,name:0
+msgid "Description"
+msgstr "Description"
+
+#. module: polling
+#: selection:polling.assettemplate.action,state:0
+#: selection:polling.assettemplate.attribute,state:0
+msgid "Pushed"
+msgstr "Pushed"
+
+#. module: polling
+#: field:polling.asset,is_data_collect:0
+msgid "Is data collect"
+msgstr "Is data collect"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_collect_asset_show
+#: field:polling.asset.collectpoint,asset_id:0
+msgid "Collect Asset"
+msgstr "Collect Asset"
+
+#. module: polling
+#: model:ir.actions.act_window,name:polling.polling_action_maintain_show
+#: view:polling.asset:0
+#: view:polling.maintain:0
+msgid "Maintains"
+msgstr "Maintains"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_assettemplate_action
+msgid "polling.assettemplate.action"
+msgstr "polling.assettemplate.action"
+
+#. module: polling
+#: field:polling.repair,repairing_time:0
+msgid "Start repairing time"
+msgstr "Start repairing time"
+
+#. module: polling
+#: sql_constraint:polling.relationtype:0
+msgid "code must be unique"
+msgstr "code must be unique"
+
+#. module: polling
+#: selection:polling.maintain,state:0
+#: selection:polling.repair,state:0
+msgid "Finished"
+msgstr "Finished"
+
+#. module: polling
+#: view:polling.repair:0
+msgid "Finish repairing"
+msgstr "Finish repairing"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_assettemplate_manager
+msgid "设备表单定义"
+msgstr "设备表单定义"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_asset_collect_record
+msgid "polling.asset.collect.record"
+msgstr "polling.asset.collect.record"
+
+#. module: polling
+#: field:polling.repair,prevent_suggest:0
+msgid "Prevent suggest"
+msgstr "Prevent suggest"
+
+#. module: polling
+#: help:polling.asset.attribute,name:0
+#: help:polling.assettemplate.attribute,name:0
+msgid "The name of the attribute"
+msgstr "The name of the attribute"
+
+#. module: polling
+#: field:polling.asset.action,cmdcontent:0
+msgid "CMD Content"
+msgstr "CMD Content"
+
+#. module: polling
+#: field:polling.asset,name:0
+#: field:polling.asset.action,name:0
+#: field:polling.asset.attribute,name:0
+#: field:polling.assettemplate,name:0
+#: field:polling.assettemplate.action,name:0
+#: field:polling.assettemplate.attribute,name:0
+#: view:polling.assettemplatecategory:0
+#: field:polling.assettemplatecategory,name:0
+#: field:polling.building,name:0
+#: field:polling.building.position,name:0
+#: field:polling.relationtype,name:0
+msgid "Name"
+msgstr "Name"
+
+#. module: polling
+#: selection:polling.asset.collect.record,state:0
+msgid "Lost"
+msgstr "Lost"
+
+#. module: polling
+#: selection:polling.relationtype,direction:0
+msgid "Double"
+msgstr "Double"
+
+#. module: polling
+#: selection:polling.maintain.line,type:0
+#: selection:polling.repair.line,type:0
+msgid "Remove"
+msgstr "Remove"
+
+#. module: polling
+#: view:polling.repair:0
+msgid "Repair orders"
+msgstr "Repair orders"
+
+#. module: polling
+#: field:polling.asset,factory_number:0
+msgid "Factory number"
+msgstr "Factory number"
+
+#. module: polling
+#: field:polling.asset.attribute,defaultvalue:0
+msgid "Value"
+msgstr "Value"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_assettemplatecategory
+msgid "Asset category"
+msgstr "Asset category"
+
+#. module: polling
+#: field:polling.asset.collect.record,collect_time:0
+msgid "Collect time"
+msgstr "Collect time"
+
+#. module: polling
+#: field:polling.maintain.line,operation_time:0
+#: field:polling.repair.line,operation_time:0
+msgid "Operation Time"
+msgstr "Operation Time"
+
+#. module: polling
+#: model:ir.model,name:polling.model_polling_maintain
+msgid "polling.maintain"
+msgstr "polling.maintain"
+
+#. module: polling
+#: field:polling.asset.action,ordernum:0
+#: field:polling.assettemplate.action,ordernum:0
+msgid "Order"
+msgstr "Order"
+
+#. module: polling
+#: field:polling.asset,asset_count:0
+msgid "Asset count"
+msgstr "Asset count"
+
+#. module: polling
+#: field:polling.maintain,maintain_man:0
+#: field:polling.repair,repair_man:0
+msgid "Repair man"
+msgstr "Repair man"
+
+#. module: polling
+#: field:polling.assettemplate,sequence:0
+#: field:polling.assettemplatecategory,sequence:0
+msgid "Sequence"
+msgstr "Sequence"
+
+#. module: polling
+#: view:polling.asset:0
+#: field:polling.asset,actions:0
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,actions:0
+msgid "Actions"
+msgstr "Actions"
+
+#. module: polling
+#: model:ir.ui.menu,name:polling.menu_polling_collect_record_manager
+msgid "设备巡检记录"
+msgstr "设备巡检记录"
+
+#. module: polling
+#: selection:polling.asset.action,executelevel:0
+#: field:polling.asset.attribute,high:0
+#: selection:polling.asset.attribute,securitylevel:0
+#: field:polling.asset.collect.record,asset_attr_high:0
+#: selection:polling.assettemplate.action,executelevel:0
+#: field:polling.assettemplate.attribute,high:0
+#: selection:polling.assettemplate.attribute,securitylevel:0
+msgid "High"
+msgstr "High"
+
+#. module: polling
+#: selection:polling.asset.action,executelevel:0
+#: selection:polling.asset.attribute,securitylevel:0
+#: selection:polling.assettemplate.action,executelevel:0
+#: selection:polling.assettemplate.attribute,securitylevel:0
+msgid "Middle"
+msgstr "Middle"
+
+#. module: polling
+#: field:polling.asset.collectpoint,asset_id_2:0
+msgid "Collected Asset"
+msgstr "Collected Asset"
+
+#. module: polling
+#: selection:polling.asset.attribute,datatype:0
+#: selection:polling.asset.attribute,sourcetype:0
+#: selection:polling.assettemplate.attribute,datatype:0
+#: selection:polling.assettemplate.attribute,sourcetype:0
+msgid "Boolean"
+msgstr "Boolean"
+
+#. module: polling
+#: field:polling.assettemplate.attribute,defaultvalue:0
+msgid "Default Value"
+msgstr "Default Value"
+
+#. module: polling
+#: field:polling.asset,buying_price:0
+msgid "Buying price"
+msgstr "Buying price"
+
+#. module: polling
+#: field:polling.assettemplate,parent_right:0
+#: field:polling.assettemplatecategory,parent_right:0
+msgid "Right parent"
+msgstr "Right parent"
+
+#. module: polling
+#: view:polling.assettemplate:0
+#: field:polling.assettemplate,inherit_actions:0
+msgid "Inherit Actions"
+msgstr "Inherit Actions"
+

@@ -888,3 +888,88 @@ class polling_maintain(osv.osv):
         "create_time":lambda self, cr, uid, context:datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 polling_maintain()
+
+###手动巡查功能区###
+class polling_parol_frequent(osv.osv):
+    _name='polling.parol.frequent'
+    _columns = {
+        'name':fields.char(string='Name',size=100,required=True),
+        'code':fields.char(string='Code',size=100),
+        'remark':fields.text(string='Remark'),
+        'polling_parol_tasks':fields.one2many('polling.parol.task','polling_parol_frequent_id',string='Tasks'),
+        'check_time_type':fields.selection([('byweek','By week'),('bydate','By date')],string='Check date'),
+        'polling_parol_frequent_date':fields.one2many('polling.parol.frequent.date','polling_parol_frequent_id',string='Dates'),
+        'polling_parol_frequent_week':fields.one2many('polling.parol.frequent.week','polling_parol_frequent_id',string='Weeks'),
+    }
+polling_parol_frequent()
+
+class polling_parol_frequent_date(osv.osv):
+    _name = 'polling.parol.frequent.date'
+    _columns = {
+        'name':fields.date(string='Date'),
+        'polling_parol_frequent_id':fields.many2one('polling.parol.frequent',string='Frequent'),
+    }
+polling_parol_frequent_date()
+
+class polling_parol_frequent_week(osv.osv):
+    _name = 'polling.parol.frequent.week'
+    _columns = {
+        'name':fields.selection([('monday','Monday'),('tuesday','Tuesday'),('wednesday','Wednesday'),
+                                 ('thursday','Thursday'),('friday','Friday'),('saturday','Saturday'),('sunday','Sunday')],string='Date'),
+        'polling_parol_frequent_id':fields.many2one('polling.parol.frequent',string='Frequent'),
+    }
+polling_parol_frequent_week()
+
+class polling_parol_task(osv.osv):
+    _name = 'polling.parol.task'
+    _columns = {
+        'name':fields.char(string='Task name', size=100,required=True),
+        'polling_parol_frequent_id':fields.many2one('polling.parol.frequent',string='Frequent'),
+        'start_time':fields.char(string='Start time',size=20),
+        'end_time':fields.char(string='End time',size=20),
+        'is_current_day':fields.boolean(string='Is Current day'),
+        'need_time':fields.integer(string='Need time'),
+        'polling_parol_paths':fields.one2many('polling.parol.path','polling_parol_task_id',string='Paths'),
+        'remark':fields.text(string='Text'),
+    }
+polling_parol_task()
+
+class polling_parol_path(osv.osv):
+    _name = 'polling.parol.path'
+    _columns = {
+        'name':fields.char(string='Path',size=100,required=True),
+        'code':fields.char(string='Code',size=100),
+        'polling_parol_task_id':fields.many2one('polling.parol.task',string='Task'),
+        'points':fields.one2many('polling.parol.path.point','polling_parol_path_id',string='Points'),
+        'check_by_order':fields.boolean(string='Need check by order'),
+        'remark':fields.text(string='Remark'),
+    }
+polling_parol_path()
+
+class polling_parol_path_point(osv.osv):
+    _name = 'polling.parol.path.point'
+    _columns = {
+        'name':fields.char(string='Point',size=100,required=True),
+        'polling_parol_path_id':fields.many2one('polling.parol.path',string='Path'),
+        'building_id':fields.many2one('polling.building',string='Building'),
+        'position_id':fields.many2one('polling.building.position',string='Position'),
+        'polling_parol_path_point_assets':fields.one2many("polling.parol.path.point.asset","polling_parol_path_point_id",string='Assets'),
+        'assets':fields.many2many('polling.asset','polling_asset_parol_path_point','polling_parol_path_point_id','polling_asset_id',string='Assets'),
+        'ordernum':fields.integer(string='Order'),
+        'hasinterval':fields.boolean(string='Has interval'),
+        'early_interval':fields.integer(string='Early interval'),
+        'last_interval':fields.integer(string='Last interval'),
+        'remark':fields.text(string='Remark'),
+    }
+    _defaults = {
+        'hasinterval':False,
+    }
+polling_parol_path_point()
+
+class polling_parol_path_point_asset(osv.osv):
+    _name ='polling.parol.path.point.asset'
+    _columns = {
+        'polling_parol_path_point_id':fields.many2one('polling.parol.path.point',string='Point'),
+        'polling_asset_id':fields.many2one('polling.asset',string='Asset'),
+    }
+polling_parol_path_point_asset()

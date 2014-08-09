@@ -574,6 +574,69 @@
             </field>
         </record>
 		
+		<record id='polling_parol_frequent_list_view' model='ir.ui.view'>
+			<field name='name'>polling.parol.frequent.list.view</field>
+			<field name='model'>polling.parol.frequent</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='type'>tree</field>
+			<field name='arch' type='xml'>
+				<tree string='Frequents' version='7.0'>
+					<field name='name'/>
+					<field name='code'/>
+					<field name='remark'/>
+				</tree>
+			</field>
+		</record>
+
+		<record id='polling_parol_frequent_form_view' model='ir.ui.view'>
+			<field name='name'>polling.parol.frequent.form.view</field>
+			<field name='model'>polling.parol.frequent</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='type'>form</field>
+			<field name='arch' type='xml'>
+				<form string='Frequents' version='7.0'>
+					<sheet>
+						<group col='4'>
+							<field name='name'/>
+							<field name='code'/>
+							<field name='check_time_type'/>
+						</group>
+						<group col='4' string='Remark'>
+							<field name='remark' nolabel='1' holdplace='Remark...'/>
+						</group>
+						<notebook>
+							<page string='Tasks'>
+								<field name='polling_parol_tasks'>
+									<tree string='Tasks' version='7.0'>
+										<field name='name'/>
+										<field name='start_time'/>
+										<field name='end_time'/>
+										<field name='is_current_day'/>
+										<field name='need_time'/>
+										<field name='remark'/>
+									</tree>
+								</field>
+							</page>
+							<page string='By weeks'>
+								<field name='polling_parol_frequent_week'>
+									<tree string='Weeks' version='7.0'>
+										<field name='name'/>
+									</tree>
+								</field>
+							</page>
+							<page string='By dates'>
+								<field name='polling_parol_frequent_date'>
+									<tree string='Dates' version='7.0'>
+										<field name='name'/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+	   </record>
+
 	   <record id="aasettemplatecategory_category_action" model="ir.actions.act_window">
             <field name="name">Category</field>
             <field name="type">ir.actions.act_window</field>
@@ -661,6 +724,14 @@
 			<field name="search_view_id" ref="polling_maintain_search_view"/>
 		</record>
 
+		<record id="polling_action_parol_frequent_show" model="ir.actions.act_window">
+			<field name='name'>Frequents</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.parol.frequent</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form,calendar</field>
+		</record>
+
 		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
 		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
 		<menuitem id="menu_polling_templatecategory_manager" action="aasettemplatecategory_category_action" name="设备分组" parent="menu_polling_template_root" sequence="30"/>
@@ -674,5 +745,7 @@
 		<menuitem id="menu_polling_products_manager" action="product.product_normal_action_sell"  name="设备备件管理" parent="menu_polling_maintain_root" sequence="40"/>
 		<menuitem id="menu_polling_collect_root" name="设备巡检管理" parent="menu_polling_root" sequence="40"/>
 		<menuitem id="menu_polling_collect_record_manager" action="polling_action_asset_collect_record_show" name="设备巡检记录" parent="menu_polling_collect_root" sequence="40"/>
+		<menuitem id="menu_polling_frequent_root" name="手动巡检管理" parent="menu_polling_root" sequence="40"/>
+		<menuitem id="menu_polling_frequent_record_manager" action="polling_action_parol_frequent_show" name="巡检班次管理" parent="menu_polling_frequent_root" sequence="40"/>
 	</data>
 </openerp>
