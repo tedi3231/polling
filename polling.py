@@ -890,6 +890,18 @@ class polling_maintain(osv.osv):
 polling_maintain()
 
 ###手动巡查功能区###
+class polling_parol_frequent_record(osv.osv):
+    _name = 'polling.parol.frequent.record'
+    _columns = {
+        'name':fields.datetime(string='Parol time'),
+        'frequent_id':fields.many2one('polling.parol.frequent',string='Frequent'),
+        'task_id':fields.many2one('polling.parol.task',string='Task'),
+        'path_id':fields.many2one('polling.parol.path',string='Path'),
+        'point_id':fields.many2one('polling.parol.path.point',string='Point'),
+        'state':fields.selection([('normal','Normal'),('lost','Lost'),('ordererror','Order error')],string='Status'),
+    }
+polling_parol_frequent_record()
+
 class polling_parol_frequent(osv.osv):
     _name='polling.parol.frequent'
     _columns = {
@@ -937,7 +949,7 @@ polling_parol_task()
 class polling_parol_path(osv.osv):
     _name = 'polling.parol.path'
     _columns = {
-        'name':fields.char(string='Path',size=100,required=True),
+        'name':fields.char(string='Name',size=100,required=True),
         'code':fields.char(string='Code',size=100),
         'polling_parol_task_id':fields.many2one('polling.parol.task',string='Task'),
         'points':fields.one2many('polling.parol.path.point','polling_parol_path_id',string='Points'),
@@ -954,7 +966,6 @@ class polling_parol_path_point(osv.osv):
         'building_id':fields.many2one('polling.building',string='Building'),
         'position_id':fields.many2one('polling.building.position',string='Position'),
         'polling_parol_path_point_assets':fields.one2many("polling.parol.path.point.asset","polling_parol_path_point_id",string='Assets'),
-        'assets':fields.many2many('polling.asset','polling_asset_parol_path_point','polling_parol_path_point_id','polling_asset_id',string='Assets'),
         'ordernum':fields.integer(string='Order'),
         'hasinterval':fields.boolean(string='Has interval'),
         'early_interval':fields.integer(string='Early interval'),
