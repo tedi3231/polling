@@ -942,7 +942,7 @@ class polling_parol_task(osv.osv):
         'is_current_day':fields.boolean(string='Is Current day'),
         'need_time':fields.integer(string='Need time'),
         'polling_parol_paths':fields.one2many('polling.parol.path','polling_parol_task_id',string='Paths'),
-        'remark':fields.text(string='Text'),
+        'remark':fields.text(string='Remark'),
     }
 polling_parol_task()
 

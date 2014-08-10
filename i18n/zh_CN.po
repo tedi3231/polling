@@ -54,7 +54,7 @@ msgstr "是否为当天"
 #. module: polling
 #: selection:polling.parol.frequent.week,name:0
 msgid "Sunday"
-msgstr "星期一"
+msgstr "星期天"
 
 #. module: polling
 #: view:polling.repair:0
@@ -74,7 +74,7 @@ msgstr "维修原因"
 #: field:polling.parol.path.point.asset,polling_asset_id:0
 #: field:polling.repair,asset_id:0
 msgid "Asset"
-msgstr "设备台账"
+msgstr "设备"
 
 #. module: polling
 #: field:polling.parol.task,need_time:0
@@ -207,6 +207,7 @@ msgstr "建筑"
 #: view:polling.parol.task:0
 #: view:polling.repair:0
 #: field:polling.repair,remark:0
+#: field:polling.task,remark:0
 msgid "Remark"
 msgstr "备注"
 
@@ -259,7 +260,7 @@ msgstr "批次"
 #. module: polling
 #: field:polling.parol.path.point,last_interval:0
 msgid "Last interval"
-msgstr "Last interval"
+msgstr "最迟于"
 
 #. module: polling
 #: view:polling.maintain:0
@@ -333,6 +334,11 @@ msgstr "预计执行小时"
 #: selection:polling.asset.collect.record,state:0
 msgid "Over"
 msgstr "溢出"
+
+#. module: polling
+#: selection:polling.asset.collect.record,state:0
+msgid "Lost"
+msgstr "断线"
 
 #. module: polling
 #: model:ir.model,name:polling.model_polling_parol_frequent_record
@@ -586,7 +592,7 @@ msgstr "分"
 #. module: polling
 #: field:polling.parol.frequent.record,name:0
 msgid "Parol time"
-msgstr "Parol time"
+msgstr "巡查时间"
 
 #. module: polling
 #: view:polling.parol.frequent:0
@@ -855,7 +861,7 @@ msgstr "进行中"
 #. module: polling
 #: selection:polling.parol.frequent.week,name:0
 msgid "Monday"
-msgstr "Monday"
+msgstr "星期一"
 
 #. module: polling
 #: selection:polling.asset.collect.record,state:0
@@ -1297,10 +1303,9 @@ msgid "Name"
 msgstr "名称"
 
 #. module: polling
-#: selection:polling.asset.collect.record,state:0
 #: selection:polling.parol.frequent.record,state:0
 msgid "Lost"
-msgstr "断线"
+msgstr "漏检"
 
 #. module: polling
 #: selection:polling.relationtype,direction:0
@@ -1310,7 +1315,7 @@ msgstr "双向"
 #. module: polling
 #: field:polling.parol.frequent,check_time_type:0
 msgid "Check date"
-msgstr "Check date"
+msgstr "巡查日"
 
 #. module: polling
 #: view:polling.repair:0
