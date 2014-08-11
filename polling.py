@@ -898,9 +898,26 @@ class polling_parol_frequent_record(osv.osv):
         'task_id':fields.many2one('polling.parol.task',string='Task'),
         'path_id':fields.many2one('polling.parol.path',string='Path'),
         'point_id':fields.many2one('polling.parol.path.point',string='Point'),
+        'frequent_record_attributes':fields.one2many('polling.parol.frequent.record.attribute','frequent_record_id',string='Record attributes'),
         'state':fields.selection([('normal','Normal'),('lost','Lost'),('ordererror','Order error')],string='Status'),
     }
 polling_parol_frequent_record()
+
+class polling_parol_frequent_record_attribute(osv.osv):
+    _name = 'polling.parol.frequent.record.attribute'
+    _columns = {
+        'frequent_record_id':fields.many2one('polling.parol.frequent.record','Frequent record'),
+        'asset_id':fields.many2one('polling.asset',string='Asset'),
+        'asset_attr_id':fields.many2one('polling.asset.attribute',string='Attribute'),
+        'asset_attr_name':fields.related('asset_attr_id','name',type='char',string='Attribute name'),
+        'asset_attr_code':fields.related('asset_attr_id','code',type='char',string='Attribute code'),
+        'asset_attr_high':fields.related('asset_attr_id','high',type='char',string='High'),
+        'asset_attr_low':fields.related('asset_attr_id','low',type='char',string='Low'),
+        'collect_value':fields.char(string='Collect value',size=100),
+        'collect_time':fields.datetime(string='Collect time'),
+        'state':fields.selection([('normal','Normal'),('exception','Exception')],string='Status'),
+    }
+polling_parol_frequent_record_attribute()
 
 class polling_parol_frequent(osv.osv):
     _name='polling.parol.frequent'

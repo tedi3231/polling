@@ -592,6 +592,40 @@
 			</field>
 		</record>
 		
+		<record id='polling_parol_frequent_record_form_view' model='ir.ui.view'>
+			<field name='name'>polling.parol.frequent.record.form.view</field>
+			<field name='model'>polling.parol.frequent.record</field>
+			<field name='arch' type='xml'>
+				<form string='Frequent record' version='7.0'>
+					<sheet>
+						<group col='4'>
+							<field name='frequent_id'/>
+							<field name='task_id'/>
+							<field name='path_id'/>
+							<field name='point_id'/>
+							<field name='state'/>
+						</group>
+						<notebook>
+							<page string='Asset attributes'>
+								<field name='frequent_record_attributes'>
+									<tree string='Asset attributes'>
+										<field name='asset_id'/>
+										<field name='asset_attr_id'/>
+										<field name='asset_attr_code'/>
+										<field name='asset_attr_high'/>
+										<field name='asset_attr_low'/>
+										<field name='collect_value'/>
+										<field name='collect_time'/>
+										<field name='state'/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>	
+		
 		<record id='polling_parol_frequent_record_list_view' model='ir.ui.view'>
 			<field name='name'>polling.parol.frequent.record.list.view</field>
 			<field name='model'>polling.parol.frequent.record</field>
