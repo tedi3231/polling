@@ -857,8 +857,9 @@
 					   <group col='4'>
 						   <field name='name'/>
 						   <field name='ordernum'/>
-						   <field name='building_id'/>
-						   <field name='position_id'/>
+						   <field name='area_id'/>
+						   <field name='building_id' domain="[('area_id','=',area_id)]"/>
+						   <field name='position_id' domain="[('polling_building_id','=',building_id)]"/>
 						   <field name='hasinterval'/>
 						   <field name='early_interval'/>
 						   <field name='last_interval'/>

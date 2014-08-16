@@ -179,6 +179,7 @@ msgstr "天"
 #: field:polling.maintain,install_building:0
 #: field:polling.parol.path.point,building_id:0
 #: field:polling.repair,install_building:0
+#: field:polling.area,polling_buildings:0
 msgid "Building"
 msgstr "建筑"
 
@@ -1454,4 +1455,21 @@ msgstr "Right parent"
 msgid "Inherit Actions"
 msgstr "继承动作"
 
+#. module: polling
+#: view:polling.area:0
+#: field:polling.area,name:0
+#: view:polling.area:0
+msgid "Name"
+msgstr "区域名称"
 
+#. module: polling
+#: view:polling.area:0
+#: field:polling.area,remark:0
+#: view:polling.area:0
+msgid "Remark"
+msgstr "区域备注"
+
+#. module: polling
+#: field:polling.area,polling_buildings:0
+msgid "Buildings"
+msgstr "建筑"
