@@ -798,7 +798,9 @@
 					   <notebook>
 						   <page string='Assets'>
 							   <field name='polling_parol_path_point_assets'>
-								   <field name='polling_asset_id'/>
+								   <tree string='Assets'>
+									   <field name='polling_asset_id'/>
+								   </tree>
 							   </field>
 						   </page>
 					   </notebook>
