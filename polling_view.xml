@@ -43,6 +43,69 @@
                 </tree>
             </field>
         </record>
+
+		<record id='polling_area_list_view' model='ir.ui.view'>
+			<field name='name'>polling.area.list.view</field>
+			<field name='model'>polling.area</field>
+			<field name='type'>tree</field>
+			<field name='arch' type='xml'>
+				<tree string='Areas'>
+					<field name='name'/>
+					<field name='remark'/>
+				</tree>
+			</field>
+		</record>
+
+		<record id='polling_area_form_view' model='ir.ui.view'>
+			<field name='name'>polling.area.form.view</field>
+			<field name='model'>polling.area</field>
+			<field name='arch' type='xml'>
+				<form string='Area' version='7.0'>
+					<sheet>
+						<group>
+							<field name='name'/>
+							<field name='remark'/>
+						</group>
+						<notebook>
+							<page string='Buildings'>
+								<field name='polling_buildings'>
+									<form string='Buildings' version='7.0'>
+										<sheet>
+											<group>
+												<field name='name'/>
+												<field name='remark'/>
+											</group>
+											<notebook>
+												<page string='Positions'>
+													<field name='positions'>
+														<form version='7.0' string='Position'>
+															<sheet>
+																<group>
+																	<field name='name'/>
+																	<field name='remark'/>
+																</group>
+															</sheet>
+														</form>
+														<tree version='7.0' string='Positions'>
+															<field name='name'/>
+															<field name='remark'/>
+														</tree>
+													</field>
+												</page>
+											</notebook>
+										</sheet>
+									</form>
+									<tree string='Buildings'>
+										<field name='name'/>
+										<field name='remark'/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
         
         <record id="polling_assettemplate_form_view" model="ir.ui.view">
             <field name="name">polling.assettemplate.form</field>
@@ -219,7 +282,8 @@
                             <field name="name"/>
 							<field name="specification"/>
 							<field name="producingarea"/>
-							<field name="install_building_id"/>
+							<field name='install_area_id'/>
+							<field name="install_building_id" domain="[('area_id','=',install_area_id)]"/>
 							<field name="install_position_id" domain="[('polling_building_id','=',install_building_id)]"/>
 							<field name="dateofproduced"/>
 							<field name="service_life"/>
@@ -227,8 +291,10 @@
 							<field name="buying_price"/>
 							<field name="factory_number"/>
 							<field name="asset_count"/>
-							<field name="asset_used" colspan="4"/>
 							<field name="is_data_collect" colspan="4" invisible='1'/>
+						</group>
+						<group col='4' colspan='4'>
+							<field name="asset_used" colspan="4"/>
 						</group>
 						<group col="4" string="Remark">
 							<field name="remark" placeholder="Remark...." colspan="4" nolabel="1"/>
@@ -353,6 +419,7 @@
                     <field name="name"/>
                     <field name="code"/>
 					<field name='specification'/>
+					<field name='install_area_id'/>
 					<field name='install_building_id'/>
 					<field name='install_position_id'/>
 					<field name='remark'/>
@@ -378,6 +445,7 @@
 							<field name='asset_id' on_change='on_asset_change(asset_id)'/>
 							<field name='asset_specification' readonly='True'/>
 							<field name='category_id' readonly='True'/>
+							<field name='install_area' readonly='True'/>
 							<field name='install_building' readonly='True'/>
 							<field name='install_building_position' readonly='True'/>
 							<field name='repair_man'/>
@@ -426,6 +494,7 @@
 					<field name='asset_id'/>
 					<field name='asset_specification'/>
 					<field name='category_id'/>
+					<field name='install_area'/>
 					<field name='install_building'/>
 					<field name='install_building_position'/>
 					<field name='repair_man'/>
@@ -489,6 +558,7 @@
 							<field name='asset_id' on_change='on_asset_change(asset_id)'/>
 							<field name='asset_specification' readonly='True'/>
 							<field name='category_id' readonly='True'/>
+							<field name='install_area' readonly='True'/>
 							<field name='install_building' readonly='True'/>
 							<field name='install_building_position' readonly='True'/>
 							<field name='maintain_man'/>
@@ -535,6 +605,7 @@
 					<field name='asset_id'/>
 					<field name='asset_specification'/>
 					<field name='category_id'/>
+					<field name='install_area'/>
 					<field name='install_building'/>
 					<field name='install_building_position'/>
 					<field name='maintain_man'/>
@@ -817,7 +888,15 @@
            <field name="view_type">form</field>
 	   </record>
 
-        <record id="polling_action_relationtype_show" model="ir.actions.act_window">
+	   <record id="polling_area_show_action" model="ir.actions.act_window">
+            <field name="name">Area</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">polling.area</field>
+            <field name="domain">[]</field>
+           <field name="view_type">form</field>
+	   </record>
+
+       <record id="polling_action_relationtype_show" model="ir.actions.act_window">
             <field name="name">Relation Type</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">polling.relationtype</field>
@@ -915,6 +994,7 @@
 
 		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
 		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
+		<menuitem id="menu_polling_area_manager" action="polling_area_show_action" name="区域建筑管理" parent="menu_polling_template_root" sequence="30"/>
 		<menuitem id="menu_polling_templatecategory_manager" action="aasettemplatecategory_category_action" name="设备分组" parent="menu_polling_template_root" sequence="30"/>
 		<menuitem id="menu_polling_assettemplate_manager" action="polling_action_assettemplate_show" name="设备表单定义" parent="menu_polling_template_root" sequence="30"/>
 		<menuitem id="menu_polling_asset_manager" action="polling_action_asset_show" name="设备台账管理" parent="menu_polling_template_root" sequence="30"/>

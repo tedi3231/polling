@@ -523,6 +523,7 @@ class polling_asset(osv.osv):
         "code":fields.char(string="Code",size=200,required=True,help="Code must be unique"),
         "name": fields.char(string='Name', size=64, required=True, translate=True, select=True),
         "specification":fields.char(string="Specification", size=100, required=False ),
+        'install_area_id':fields.many2one('polling.area',string='Area'),
         "install_building_id":fields.many2one("polling.building",string="Building"),
         "install_position_id":fields.many2one("polling.building.position",string="Position"),
         "brand":fields.char(string="Brand",size=100,required=False),
@@ -738,12 +739,23 @@ class polling_asset_relation(osv.osv):
 polling_asset_relation()
 
 
+class polling_area(osv.osv):
+    _name = 'polling.area'
+
+    _columns = {
+        'name':fields.char(string='Name',required=True,size=100),
+        'remark':fields.char(string='Remark',size=500),
+        'polling_buildings':fields.one2many('polling.building','area_id',string='Buildings'),
+    }
+polling_area()
+
 class polling_building(osv.osv):                                                                
      _name = "polling.building"         
 
      _columns = {                                                                                    
          "name":fields.char(string="Name",required=True,size=100),                                   
-         "remark":fields.char(string="Remark",size=500,required=True),                               
+         "remark":fields.char(string="Remark",size=500,required=True),                      
+         'area_id':fields.many2one('polling.area',string='Area'),
          "positions":fields.one2many("polling.building.position","polling_building_id",strin="Racks"),        
      }                                                                                               
 polling_building()                                                                              
@@ -773,8 +785,9 @@ class polling_repair(osv.osv):
         return {
             'value':{
                 'category_id':item['category_id'] and item['category_id'][0],
+                'install_area':item['install_area_id'] and item['install_area_id'][0],
                 'install_building':item['install_building_id'] and item['install_building_id'][0],
-                'specification':item['specification'],
+                'asset_specification':item['specification'],
                 'asset_code':item['code'],
                 'install_building_position':item['install_position_id'] and item['install_position_id'][0],
             }
@@ -784,6 +797,7 @@ class polling_repair(osv.osv):
         "name":fields.char(string="Repair Number",required=True,size=100),
         "asset_id":fields.many2one("polling.asset",string="Asset"),
         'category_id':fields.related('asset_id','category_id',type='many2one',relation='polling.assettemplatecategory',string='Category'),
+        'install_area':fields.related('asset_id','install_area_id',type='many2one',relation='polling.area',string='Area'),
         "install_building":fields.related("asset_id","install_building_id",type="many2one",relation="polling.building",string="Building"),
         "install_building_position":fields.related("asset_id",'install_position_id',type='many2one',relation='polling.building.position',string='Position'),
         'asset_code':fields.related('asset_id','code',type='char',string='Asset Code'),
@@ -856,8 +870,9 @@ class polling_maintain(osv.osv):
         return {
             'value':{
                 'category_id':item['category_id'] and item['category_id'][0],
+                'install_area':item['install_area_id'] and item['install_area_id'][0],
                 'install_building':item['install_building_id'] and item['install_building_id'][0],
-                'specification':item['specification'],
+                'asset_specification':item['specification'],
                 'asset_code':item['code'],
                 'install_building_position':item['install_position_id'] and item['install_position_id'][0],
             }
@@ -867,6 +882,7 @@ class polling_maintain(osv.osv):
         "name":fields.char(string="Maintain number",required=True,size=100),
         "asset_id":fields.many2one("polling.asset",string="Asset"),
         'category_id':fields.related('asset_id','category_id',type='many2one',relation='polling.assettemplatecategory',string='Category'),
+        'install_area':fields.related('asset_id','install_area_id',type='many2one',relation='polling.area',string='Area'),
         "install_building":fields.related("asset_id","install_building_id",type="many2one",relation="polling.building",string="Building"),
         "install_building_position":fields.related("asset_id",'install_position_id',type='many2one',relation='polling.building.position',string='Position'),
         'asset_code':fields.related('asset_id','code',type='char',string='Asset Code'),
@@ -980,6 +996,7 @@ class polling_parol_path_point(osv.osv):
     _columns = {
         'name':fields.char(string='Point',size=100,required=True),
         'polling_parol_path_id':fields.many2one('polling.parol.path',string='Path'),
+        'area_id':fields.many2one('polling.area',string='Area'),
         'building_id':fields.many2one('polling.building',string='Building'),
         'position_id':fields.many2one('polling.building.position',string='Position'),
         'polling_parol_path_point_assets':fields.one2many("polling.parol.path.point.asset","polling_parol_path_point_id",string='Assets'),
