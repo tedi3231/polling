@@ -793,6 +793,23 @@ class polling_repair(osv.osv):
             }
         }
 
+    def attachment_tree_view(self, cr, uid, ids, context):
+        domain = [
+             '&', ('res_model', '=', 'polling.repair'), ('res_id', 'in', ids),
+        ]
+        res_id = ids and ids[0] or False
+        return {
+            'name': _('Documents'),
+            'domain': domain,
+            'res_model': 'ir.attachment',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+            'context': "{'default_res_model': '%s','default_res_id': %d}" % (self._name, res_id)
+        }
+
     _columns = {
         "name":fields.char(string="Repair Number",required=True,size=100),
         "asset_id":fields.many2one("polling.asset",string="Asset"),
@@ -878,6 +895,23 @@ class polling_maintain(osv.osv):
             }
         }
     
+    def attachment_tree_view(self, cr, uid, ids, context):
+        domain = [
+             '&', ('res_model', '=', 'polling.maintain'), ('res_id', 'in', ids),
+        ]
+        res_id = ids and ids[0] or False
+        return {
+            'name': _('Documents'),
+            'domain': domain,
+            'res_model': 'ir.attachment',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+            'context': "{'default_res_model': '%s','default_res_id': %d}" % (self._name, res_id)
+        }
+
     _columns = {
         "name":fields.char(string="Maintain number",required=True,size=100),
         "asset_id":fields.many2one("polling.asset",string="Asset"),
