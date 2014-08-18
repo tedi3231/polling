@@ -749,8 +749,8 @@
 								<field name='polling_parol_tasks'>
 									<tree string='Tasks' version='7.0'>
 										<field name='name'/>
-										<field name='start_time'/>
-										<field name='end_time'/>
+										<field name='start_time' widget='float_time'/>
+										<field name='end_time' widget='float_time'/>
 										<field name='is_current_day'/>
 										<field name='need_time'/>
 										<field name='remark'/>
@@ -787,8 +787,8 @@
 				   <sheet>
 					   <group col='4'>
 						   <field name='name'/>
-						   <field name='start_time'/>
-						   <field name='end_time'/>
+						   <field name='start_time' widget='float_time'/>
+						   <field name='end_time' widget='float_time'/>
 						   <field name='is_current_day'/>
 						   <field name='need_time'/>
 					   </group>

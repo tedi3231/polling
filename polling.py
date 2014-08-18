@@ -970,8 +970,8 @@ class polling_parol_task(osv.osv):
     _columns = {
         'name':fields.char(string='Task name', size=100,required=True),
         'polling_parol_frequent_id':fields.many2one('polling.parol.frequent',string='Frequent'),
-        'start_time':fields.char(string='Start time',size=20),
-        'end_time':fields.char(string='End time',size=20),
+        'start_time':fields.float(string='Start time'),
+        'end_time':fields.float(string='End time'),
         'is_current_day':fields.boolean(string='Is Current day'),
         'need_time':fields.integer(string='Need time'),
         'polling_parol_paths':fields.one2many('polling.parol.path','polling_parol_task_id',string='Paths'),
