@@ -999,6 +999,87 @@
 			<field name='search_view_id' ref='polling_parol_frequent_record_search_view'/>
 		</record>
 
+		<record id='polling_patrol_asset_record_list_view' model='ir.ui.view'>
+			<field name='name'>polling.patrol.asset.record.list.view</field>
+			<field name='model'>polling.patrol.asset.record</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='type'>tree</field>
+			<field name='arch' type='xml'>		
+				<tree string='Frequents' version='7.0'>
+					<field name='asset_id'/>
+					<field name='asset_attr_id'/>
+					<field name='asset_attr_name'/>
+					<field name='asset_attr_code'/>
+					<field name='asset_attr_high'/>
+					<field name='asset_attr_low'/>
+					<field name='collect_value'/>
+					<field name='collect_time'/>
+					<field name='remark'/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id='polling_patrol_asset_list_view' model='ir.ui.view'>
+			<field name='name'>polling.patrol.asset.list.view</field>
+			<field name='model'>polling.parol.path.point.asset</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='type'>tree</field>
+			<field name='arch' type='xml'>		
+				<tree string='Frequents' version='7.0'>
+					<field name='polling_parol_path_point_id'/>
+					<field name='polling_asset_id'/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="polling_action_patrol_asset_record_show" model="ir.actions.act_window">
+			<field name='name'>Patrol Asset Record</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.patrol.asset.record</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>	
+		
+		<record id="polling_action_parol_point_show" model="ir.actions.act_window">
+			<field name='name'>Patrol Point Show</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.parol.path.point</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+		
+		<record id="polling_action_parol_point_asset_show" model="ir.actions.act_window">
+			<field name='name'>Patrol Point Asset Show</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.parol.path.point.asset</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+		
+		<record id='polling_patrol_task_record_list_view' model='ir.ui.view'>
+			<field name='name'>polling.patrol.task.record.list.view</field>
+			<field name='model'>polling.patrol.task.record</field>
+			<field name='view_mode'>tree,form</field>
+			<field name='type'>tree</field>
+			<field name='arch' type='xml'>		
+				<tree string='PatrolTask' version='7.0'>
+					<field name='polling_asset_id'/>
+					<field name='patrol_point_id'/>
+					<field name='status'/>
+					<field name='patrol_time'/>
+					<field name='update_time'/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="polling_action_patrol_task_record__show" model="ir.actions.act_window">
+			<field name='name'>Patrol Task Record Show</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.patrol.task.record</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+
 		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
 		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
 		<menuitem id="menu_polling_area_manager" action="polling_area_show_action" name="区域建筑管理" parent="menu_polling_template_root" sequence="30"/>
@@ -1016,5 +1097,11 @@
 		<menuitem id="menu_polling_frequent_root" name="手动巡检管理" parent="menu_polling_root" sequence="40"/>
 		<menuitem id="menu_polling_frequent_manager" action="polling_action_parol_frequent_show" name="巡检班次管理" parent="menu_polling_frequent_root" sequence="60"/>
 		<menuitem id="menu_polling_frequent_record_manager" action="polling_action_parol_frequent_record_show" name="巡检记录查询" parent="menu_polling_frequent_root" sequence="61"/>
+		
+		<menuitem id="menu_polling_asset_record" action="polling_action_patrol_asset_record_show" name="手动设备巡检记录" parent="menu_polling_frequent_root" sequence="62"/>
+		<menuitem id="menu_polling_frequent_point_manager" action="polling_action_parol_point_show" name="巡更点" parent="menu_polling_frequent_root" sequence="63"/>
+		<menuitem id="menu_polling_frequent_point_asset_manager" action="polling_action_parol_point_asset_show" name="巡更点设备" parent="menu_polling_frequent_root" sequence="64"/>
+		<menuitem id="menu_polling_frequent_patrol_task_record_manager" action="polling_action_patrol_task_record__show" name="巡更任务记录表" parent="menu_polling_frequent_root" sequence="65"/>
+		
 	</data>
 </openerp>

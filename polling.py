@@ -1052,3 +1052,75 @@ class polling_parol_path_point_asset(osv.osv):
         'polling_asset_id':fields.many2one('polling.asset',string='Asset'),
     }
 polling_parol_path_point_asset()
+
+
+class polling_asset_collect_finalrecord(osv.osv):
+    _name="polling.asset.collect.finalrecord"
+    _columns={
+            'asset_id':fields.many2one('polling.asset',string='Asset'),
+            'asset_attr_id':fields.many2one('polling.asset.attribute',string='Attribute'),
+            'asset_attr_name':fields.related('asset_attr_id','name',type='char',string='Attribute name'),
+            'asset_attr_code':fields.related('asset_attr_id','code',type='char',string='Attribute code'),
+            'asset_attr_high':fields.related('asset_attr_id','high',type='char',string='High'),
+            'asset_attr_low':fields.related('asset_attr_id','low',type='char',string='Low'),
+            'collect_point_id':fields.many2one('polling.asset.collectpoint',string='Collect point'),
+            'collect_asset_id':fields.related('collect_point_id','asset_id',type='many2one',relation='polling.asset',string='Collect asset'),
+            'collect_value':fields.char(string='Collect value',size=100),
+            'collect_time':fields.datetime(string='Collect time'),
+            'state':fields.selection([('normal','Normal'),('lost','Lost'),('over','Over')],string='Status'),
+
+            }
+polling_asset_collect_finalrecord()
+
+
+
+class polling_asset_warning_errorrecord(osv.osv):
+    _name="polling.asset.warning.error"
+    _columns={
+            'asset_id':fields.many2one('polling.asset',string='Asset'),
+            'asset_attr_id':fields.many2one('polling.asset.attribute',string='Attribute'),
+            'asset_attr_name':fields.related('asset_attr_id','name',type='char',string='Attribute name'),
+            'asset_attr_code':fields.related('asset_attr_id','code',type='char',string='Attribute code'),
+            'asset_attr_high':fields.related('asset_attr_id','high',type='char',string='High'),
+            'asset_attr_low':fields.related('asset_attr_id','low',type='char',string='Low'),
+            'collect_point_id':fields.many2one('polling.asset.collectpoint',string='Collect point'),
+            'collect_asset_id':fields.related('collect_point_id','asset_id',type='many2one',relation='polling.asset',string='Collect asset'),
+            'collect_value':fields.char(string='Collect value',size=100),
+            'collect_time':fields.datetime(string='Collect time'),
+            'state':fields.selection([('normal','Normal'),('lost','Lost'),('over','Over')],string='Status'),
+            'excep_type':fields.selection([('warning',"Warning"),('error','Error'),('duanxian','DuaniXian')],string='Exception Type'),
+            'description':fields.char(string='Description',size=200),
+            }
+polling_asset_warning_errorrecord()
+
+
+# frj #
+
+class polling_patrol_asset_record(osv.osv):
+    _name = "polling.patrol.asset.record"
+    _columns = {
+                    'asset_id':fields.many2one('polling.asset',string='Asset'),
+                    'asset_attr_id':fields.many2one('polling.asset.attribute',string='Attribute'),
+                    'asset_attr_name':fields.related('asset_attr_id','name',type='char',string='Attribute name'),
+                    'asset_attr_code':fields.related('asset_attr_id','code',type='char',string='Attribute code'),
+                    'asset_attr_high':fields.related('asset_attr_id','high',type='char',string='High'),
+                    'asset_attr_low':fields.related('asset_attr_id','low',type='char',string='Low'),
+                    'collect_value':fields.char(string='Collect value',size=100),
+                    'collect_time':fields.datetime(string='Collect time'),
+                    'remark':fields.text(string="Remark")
+               }
+
+polling_patrol_asset_record()
+
+class polling_patrol_task_record(osv.osv):
+    _name = "polling.patrol.task.record"
+    _columns = {
+                    'patrol_point_id':fields.many2one('polling.parol.path.point',string='Patrol Point'),
+                    'polling_asset_id':fields.many2one('polling.asset',string='Asset'),
+                    'patrol_time':fields.datetime(string='Patrol Time'),
+                    'status':fields.selection([('draft','Draft'),('finished','Finished'),('patrolling','Patrolling')],string="Status",size=100),
+                    'update_time':fields.datetime(string='Update Time'),
+               }
+
+polling_patrol_task_record()
+
