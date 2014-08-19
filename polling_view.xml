@@ -391,7 +391,7 @@
             <field name="view_mode">tree,form</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-				<tree string="Collect records" colors="red:state=='over';blue:state=='normal';#cccc00:state=='lost';">
+				<tree string="Collect records">
 					<field name="asset_id"/>
 					<field name='asset_attr_name'/>
                     <field name="asset_attr_code"/>
