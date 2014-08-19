@@ -401,7 +401,7 @@
 					<field name='collect_asset_id'/>
 					<field name='collect_value'/>
 					<field name='collect_time'/>
-					<field name='state'/>
+					<field name='excep_type'/>
                 </tree>
             </field>
         </record>
