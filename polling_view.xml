@@ -910,6 +910,17 @@
 		</field>
 	</record>
 
+	<record id='polling_asset_warning_error_graph_view' model='ir.ui.view'>
+		<field name='name'>polling.asset.warning.error.graph.view</field>
+		<field name='model'>polling.asset.warning.error</field>
+		<field name='arch' type='xml'>
+			<graph string='Collect Records'>
+				<field name='excep_type' group='True'/>
+				<field name='collect_time' operator='measure'/>
+			</graph>
+		</field>
+	</record>
+
 	<record id="polling_asset_waring_error_list_view" model="ir.ui.view">
 			<field name="name">polling.asset.warning.error.list</field>
 			<field name="model">polling.asset.warning.error</field>
@@ -1132,7 +1143,7 @@
 			<field name='type'>ir.actions.act_window</field>
 			<field name='res_model'>polling.asset.warning.error</field>
 			<field name='view_type'>form</field>
-			<field name='view_mode'>tree,form</field>
+			<field name='view_mode'>tree,form,graph</field>
 		</record>
 
 		<record id="polling_action_asset_collect_finalrecord_show" model="ir.actions.act_window">
