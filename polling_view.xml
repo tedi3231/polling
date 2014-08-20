@@ -921,6 +921,21 @@
 		</field>
 	</record>
 
+	<record id="view_polling_asset_warning_error_filter" model="ir.ui.view">
+			<field name="name">view.polling.asset.warning.error.filter</field>
+			<field name="model">polling.asset.warning.error</field>
+			<field name="arch" type="xml">
+				<search string="Search">
+					<field name="asset_id"/>
+					<field name="asset_attr_name"/>
+					<field name='collect_point_id' widget='selection'/>
+					<group expand="0" string="Group By....">
+						<filter string="Excep Type" name="excep_type" domain="[]" context="{'group_by':'excep_type'}"/>
+					</group>
+				</search>
+			</field>
+	</record>
+
 	<record id="polling_asset_waring_error_list_view" model="ir.ui.view">
 			<field name="name">polling.asset.warning.error.list</field>
 			<field name="model">polling.asset.warning.error</field>
@@ -1144,6 +1159,7 @@
 			<field name='res_model'>polling.asset.warning.error</field>
 			<field name='view_type'>form</field>
 			<field name='view_mode'>tree,form,graph</field>
+			<field name='search_view_id' ref='view_polling_asset_warning_error_filter'/>
 		</record>
 
 		<record id="polling_action_asset_collect_finalrecord_show" model="ir.actions.act_window">
