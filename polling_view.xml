@@ -887,6 +887,53 @@
 		   </field>
 	   </record>
 
+	   <!-- define by lufeng-->
+	<record id="polling_asset_collect_finalrecord_list_view" model="ir.ui.view">
+		<field name="name">polling.asset.collect.finalrecord.list</field>
+		<field name="model">polling.asset.collect.finalrecord</field>
+		<field name="priority">1</field>
+		<field name="view_mode">tree,form</field>
+		<field name="type">tree</field>
+		<field name="arch" type="xml">
+			<tree string="Collect records" colors="red:state=='over';blue:state=='normal';#cccc00:state=='lost';">
+				<field name="asset_id"/>
+				<field name='asset_attr_name'/>
+				<field name="asset_attr_code"/>
+				<field name="asset_attr_high"/>
+				<field name='asset_attr_low'/>
+				<field name='collect_point_id'/>
+				<field name='collect_asset_id'/>
+				<field name='collect_value'/>
+				<field name='collect_time'/>
+				<field name='state'/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="polling_asset_waring_error_list_view" model="ir.ui.view">
+			<field name="name">polling.asset.warning.error.list</field>
+			<field name="model">polling.asset.warning.error</field>
+			<field name="priority">1</field>
+			<field name="view_mode">tree,form</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Collect records" colors="red:state=='over';blue:state=='normal';#cccc00:state=='lost';">
+					<field name="asset_id"/>
+					<field name='asset_attr_name'/>
+					<field name="asset_attr_code"/>
+					<field name="asset_attr_high"/>
+					<field name='asset_attr_low'/>
+					<field name='collect_point_id'/>
+					<field name='collect_asset_id'/>
+					<field name='collect_value'/>
+					<field name='collect_time'/>
+					<field name='state'/>
+					<field name='excep_type'/>
+					<field name='description'/>
+				</tree>
+			</field>
+		</record>
+
 	   <record id="aasettemplatecategory_category_action" model="ir.actions.act_window">
             <field name="name">Category</field>
             <field name="type">ir.actions.act_window</field>
