@@ -13,5 +13,17 @@
         "hr",
         "product",
     ],
+    "js":[
+        "static/src/js/highstock_src.js",
+        "static/src/js/exporting_src.js",
+        "static/src/js/polling.js",
+
+        ],
+    "qweb":[
+        "static/src/xml/polling.xml",
+        ],
+    "css":[
+        "static/src/css/polling.css",
+        ],
     "installable":True,
 }
