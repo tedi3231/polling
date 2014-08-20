@@ -1080,6 +1080,22 @@
 			<field name='view_mode'>tree,form</field>
 		</record>
 
+		<record id="polling_action_asset_warning_error_show" model="ir.actions.act_window">
+			<field name='name'>Warning And Error Records</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.asset.warning.error</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+
+		<record id="polling_action_asset_collect_finalrecord_show" model="ir.actions.act_window">
+			<field name='name'>Final Records</field>
+			<field name='type'>ir.actions.act_window</field>
+			<field name='res_model'>polling.asset.collect.finalrecord</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+		</record>
+
 		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
 		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
 		<menuitem id="menu_polling_area_manager" action="polling_area_show_action" name="区域建筑管理" parent="menu_polling_template_root" sequence="30"/>
@@ -1094,6 +1110,8 @@
 		<menuitem id="menu_polling_products_manager" action="product.product_normal_action_sell"  name="设备备件管理" parent="menu_polling_maintain_root" sequence="40"/>
 		<menuitem id="menu_polling_collect_root" name="设备巡检管理" parent="menu_polling_root" sequence="40"/>
 		<menuitem id="menu_polling_collect_record_manager" action="polling_action_asset_collect_record_show" name="设备巡检记录" parent="menu_polling_collect_root" sequence="40"/>
+		<menuitem id="menu_polling_collect_finalrecord_manager" name="设备巡检最终记录" action="polling_action_asset_collect_finalrecord_show" parent="menu_polling_collect_root" sequence="40"/>
+		<menuitem id="menu_polling_asset_warning_error_manager" name="设备警告和错误记录" action="polling_action_asset_warning_error_show" parent="menu_polling_collect_root" sequence="40"/>
 		<menuitem id="menu_polling_frequent_root" name="手动巡检管理" parent="menu_polling_root" sequence="40"/>
 		<menuitem id="menu_polling_frequent_manager" action="polling_action_parol_frequent_show" name="巡检班次管理" parent="menu_polling_frequent_root" sequence="60"/>
 		<menuitem id="menu_polling_frequent_record_manager" action="polling_action_parol_frequent_record_show" name="巡检记录查询" parent="menu_polling_frequent_root" sequence="61"/>
