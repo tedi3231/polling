@@ -621,7 +621,19 @@ class polling_asset_collect_record(osv.osv):
         'excep_type':fields.selection([('warning',"Warning"),('error','Error'),('duanxian','DuaniXian'),('normal','Normal')],string='Exception Type'),
     }
 polling_asset_collect_record()
-                              
+
+class polling_warning_type(osv.osv):
+    _name = 'polling.warning.type'                       
+    _columns = {
+        'name':fields.char(string='Name',size=100,required=True),
+        'code':fields.char(string='Code',size=100,required=True),
+        'remark':fields.text(string='Remark'),
+    }
+    _sql_constraints = {
+        ('code','unique(code)','Code must be unique!'),
+    }
+polling_warning_type()
+
 class polling_asset_attribute(osv.osv):
     _name="polling.asset.attribute"
    
@@ -639,6 +651,7 @@ class polling_asset_attribute(osv.osv):
         "fromtemplate":fields.selection([("yes","Yes"),("no","No")],string="FromTemplate"),
         "high":fields.char(string="High",size=500),
         "low":fields.char(string="Low",size=500),
+        'attribute_warnings':fields.one2many('polling.asset.attribute.warning','attribute_id',string='Warnings'),
         "remark":fields.char(string="Remark",size=500,required=False),
     }
 
@@ -648,8 +661,28 @@ class polling_asset_attribute(osv.osv):
         "sourcetype":"integer",
         "fromtemplate":"no",
     }
-
 polling_asset_attribute()
+
+
+class polling_asset_attribute_warning(osv.osv):
+    _name = 'polling.asset.attribute.warning'
+
+    def get_warningtypes(self,cr,uid,context=None):
+        res = []
+        warning_rep = self.pool.get('polling.warning.type')
+        warning_ids = warning_rep.search(cr,uid,[],context=context)
+        for item in warning_rep.read(cr,uid,warning_ids,['name','code'],context=context):
+            res.append((item['name'],item['code']))
+        return res
+
+    _columns = {
+        'name':fields.char(string='Remark',size=100,required=True),
+        'attribute_id':fields.many2one('polling.asset.attribute',string='Attribute'),
+        'high':fields.char(string='High',size=100,required=True),
+        'low':fields.char(string='Low',size=100,required=True),
+        'warningtype_code':fields.selection(get_warningtypes,string='Warning',required=True),
+    }
+polling_asset_attribute_warning()
 
 class polling_asset_action(osv.osv):
     _name="polling.asset.action"
