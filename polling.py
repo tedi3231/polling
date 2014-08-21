@@ -518,18 +518,36 @@ class polling_asset(osv.osv):
         }
     
     def get_last_maintain_date(self,cr,uid,ids,field_name,args,context=None):
-        print 'ids is %s'%ids
         res=dict.fromkeys(ids,None)
         if len(ids)==1:
             ids.append(0)
         sql="select asset_id, finished_time from polling_maintain where asset_id in %s"% (tuple(ids),)
-        print 'sql is %s ' %sql
         cr.execute(sql)
         for item in cr.fetchall():
-            print 'foreach start'
-            #print 'item is %s'%item
             res[item[0]] = item[1]
         return res
+
+    def get_last_repair_date(self,cr,uid,ids,field_name,args,context=None):
+        res=dict.fromkeys(ids,None)
+        if len(ids)==1:
+            ids.append(0)
+        sql="select asset_id, finished_time from polling_repair where asset_id in %s"% (tuple(ids),)
+        cr.execute(sql)
+        for item in cr.fetchall():
+            res[item[0]] = item[1]
+        return res
+
+    def get_asset_from_maintain(self,cr,uid,maintain_ids,context=None):
+        res = set([])
+        for item in self.pool.get('polling.maintain').browse(cr,uid,maintain_ids,context=context):
+            res.add(item.asset_id.id)
+        return list(res)
+
+    def get_asset_from_repair(self,cr,uid,maintain_ids,context=None):
+        res = set([])
+        for item in self.pool.get('polling.repair').browse(cr,uid,maintain_ids,context=context):
+            res.add(item.asset_id.id)
+        return list(res)
 
     _columns = {
         "category_id":fields.many2one("polling.assettemplatecategory",string="Category",select=True),
@@ -558,7 +576,11 @@ class polling_asset(osv.osv):
         "actions":fields.one2many("polling.asset.action","asset_id",string="Actions"), 
         'collect_points':fields.one2many('polling.asset.collectpoint','asset_id',string='Collect points'),
         'spares':fields.one2many('polling.asset.spare','asset_id',string='Spares'),
-        'last_maintain_date':fields.function(get_last_maintain_date,type='datetime',string='Last maintain date'),
+        'last_maintain_date':fields.function(get_last_maintain_date,type='datetime',string='Last maintain date',
+                                             store={'polling.maintain':(get_asset_from_maintain,['finished_time'],10)}),
+        'last_repair_date':fields.function(get_last_repair_date,type='datetime',string='Last repair date',
+                                             store={'polling.repair':(get_asset_from_repair,['finished_time'],10)}),
+        'maintain_cycle_life':fields.integer(string='Maintain cycle days'),
     }
 
     _defaults = {
