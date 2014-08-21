@@ -928,6 +928,27 @@ class polling_repair(osv.osv):
     }
 polling_repair()
 
+class polling_repair_report(osv.osv):
+    _name = 'polling.repair.report'
+    _columns={
+        'name':fields.char(string='Report number',size=100,required=True),
+        'report_man':fields.many2one('hr.employee',string='Report man'),
+        'report_department':fields.related('report_man','department_id',type='many2one',relation='hr.department',string='Report department'),
+        'report_time':fields.datetime(string='Report time'),
+        'asset_id':fields.many2one('polling.asset',string='Asset'),
+        'report_reason':fields.text(string='Report reason'),
+        'fault_description':fields.text(string='Fault description'),
+        'report_type':fields.selection([('manual','Manual'),('auto','Auto')],string='Report type'),
+        'level':fields.selection([('normal','Normal'),('ungent','Ungent'),('veryungent','Very ungent')],string='Level'),
+        'state':fields.selection([('draft','Wait confirm'),('confirmed','Confirmed'),('finished','Finished')],string='State'),
+        'remark':fields.text(string='Remark'),
+    }
+    _defaults={
+        'report_time':lambda self,cr,uid,context:datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'state':lambda self,cr,uid,context: 'draft',
+    }
+
+polling_repair_report()
 
 class polling_repair_line(osv.osv):
     _name = "polling.repair.line"
