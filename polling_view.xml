@@ -360,20 +360,21 @@
 											<group col='4'>
 												<field name='name'/>
 												<field name='needcount'/>
-												<field name='lifecycledays'/>
+												<!--<field name='lifecycledays'/>
 												<field name='maintaincycledays'/>
 												<field name='install_date'/>
-												<field name='last_maintaindate'/>
+												<field name='last_maintaindate'/>-->
 											</group>
 										</sheet>
 									</form>
 									<tree string='Spares' version='7.0'>
 										<field name='name'/>
 										<field name='needcount'/>
-										<field name='lifecycledays'/>
+										<!--<field name='lifecycledays'/>
 										<field name='maintaincycledays'/>
 										<field name='install_date'/>
 										<field name='last_maintaindate'/>
+										-->
 									</tree>
 								</field>
 							</page>
