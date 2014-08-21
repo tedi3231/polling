@@ -516,6 +516,20 @@ class polling_asset(osv.osv):
                         "relations": relation_result,
                     }
         }
+    
+    def get_last_maintain_date(self,cr,uid,ids,field_name,args,context=None):
+        print 'ids is %s'%ids
+        res=dict.fromkeys(ids,None)
+        if len(ids)==1:
+            ids.append(0)
+        sql="select asset_id, finished_time from polling_maintain where asset_id in %s"% (tuple(ids),)
+        print 'sql is %s ' %sql
+        cr.execute(sql)
+        for item in cr.fetchall():
+            print 'foreach start'
+            #print 'item is %s'%item
+            res[item[0]] = item[1]
+        return res
 
     _columns = {
         "category_id":fields.many2one("polling.assettemplatecategory",string="Category",select=True),
@@ -543,6 +557,8 @@ class polling_asset(osv.osv):
         "relations":fields.one2many("polling.asset.relation","asset_id",string="Relations"),
         "actions":fields.one2many("polling.asset.action","asset_id",string="Actions"), 
         'collect_points':fields.one2many('polling.asset.collectpoint','asset_id',string='Collect points'),
+        'spares':fields.one2many('polling.asset.spare','asset_id',string='Spares'),
+        'last_maintain_date':fields.function(get_last_maintain_date,type='datetime',string='Last maintain date'),
     }
 
     _defaults = {
@@ -601,6 +617,24 @@ class polling_asset_collectpoint(osv.osv):
         'remark':fields.text(string='Remark'),
     }
     _parent_name='asset_id'
+
+class polling_asset_spare(osv.osv):
+    _name = 'polling.asset.spare'
+    _columns = {
+        'name':fields.many2one('product.product',string='Spare',required=True),
+        'needcount':fields.integer(string='Need count',required=True),
+        'asset_id':fields.many2one('polling.asset',string='Asset'),
+        #生命周期
+        'lifecycledays':fields.integer('Life cycle days',required=True,help='The days of life cycle'),
+        #维护周期
+        'maintaincycledays':fields.integer('Maintain cycle days'),
+        'install_date':fields.datetime(string='Install date'),
+        'last_maintaindate':fields.datetime(string='Last maintain date',help='The last repair date or maintain date'),
+    }
+    _defaults = {
+        'needcount':0,
+    }
+polling_asset_spare()
 
 polling_asset_collectpoint()                                                                       
 

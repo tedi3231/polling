@@ -291,6 +291,7 @@
 							<field name="buying_price"/>
 							<field name="factory_number"/>
 							<field name="asset_count"/>
+							<field name='last_maintain_date'/>
 							<field name="is_data_collect" colspan="4" invisible='1'/>
 						</group>
 						<group col='4' colspan='4'>
@@ -310,7 +311,6 @@
 										  <field name="defaultvalue"/>
 										  <field name="high"/>
 										  <field name="low"/>
-										  
 									  </tree> 
 								  </field>
 							</page>                        
@@ -348,6 +348,30 @@
 										<field name='collect_period'/>
 										<field name='collect_period_count'/>
 										<field name='hasstop'/>
+									</tree>
+								</field>
+							</page>
+							<page name='spares_page' string='Spares'>
+								<field name='spares'>
+									<form string='Spare' version='7.0'>
+										<sheet>
+											<group col='4'>
+												<field name='name'/>
+												<field name='needcount'/>
+												<field name='lifecycledays'/>
+												<field name='maintaincycledays'/>
+												<field name='install_date'/>
+												<field name='last_maintaindate'/>
+											</group>
+										</sheet>
+									</form>
+									<tree string='Spares' version='7.0'>
+										<field name='name'/>
+										<field name='needcount'/>
+										<field name='lifecycledays'/>
+										<field name='maintaincycledays'/>
+										<field name='install_date'/>
+										<field name='last_maintaindate'/>
 									</tree>
 								</field>
 							</page>
@@ -418,9 +442,9 @@
 										<sheet>
 											<group col='4'>
 												<field name='name'/>
+												<field name='warningtype_code'/>
 												<field name='high'/>
 												<field name='low'/>
-												<field name='warningtype_code'/>
 											</group>
 										</sheet>
 									</form>
