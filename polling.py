@@ -866,7 +866,14 @@ class polling_repair(osv.osv):
         return self.write(cr,uid,ids,{'state':'repairing','repairing_time':datetime.datetime.now()},context=context)
 
     def act_finish(self,cr,uid,ids,context=None):
-        return self.write(cr,uid,ids,{'state':'finished','finished_time':datetime.datetime.now()},context=context)
+        res= self.write(cr,uid,ids,{'state':'finished','finished_time':datetime.datetime.now()},context=context)
+        item = self.read(cr,uid,ids,['repair_report_ids'],context=context)
+        if item:
+            report_ids = item[0]['repair_report_ids']
+        else:
+            return res
+        self.pool.get('polling.repair.report').write(cr,uid,report_ids,{'state':'finished'},context=context)
+        return res
 
     def on_asset_change(self,cr,uid,ids,asset_id,context=None):
         asset_rep = self.pool.get('polling.asset')
@@ -920,6 +927,7 @@ class polling_repair(osv.osv):
         'repairing_time':fields.datetime(string='Start repairing time'),
         'finished_time':fields.datetime(string='Finish repairing time'),
         'polling_repair_lines':fields.one2many('polling.repair.line','polling_repair_id',string='Repair lines'),
+        'repair_report_ids':fields.one2many('polling.repair.report','repair_id',string='Reports'),
         'remark':fields.text(string='Remark'),
     }
     _defaults = {
@@ -930,17 +938,53 @@ polling_repair()
 
 class polling_repair_report(osv.osv):
     _name = 'polling.repair.report'
+
+    def act_confirm(self,cr,uid,ids,context=None):
+        return self.write(cr,uid,ids,{'state':'confirmed','confirm_time':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+    def act_finish(self,cr,uid,ids,context=None):
+        return self.write(cr,uid,ids,{'state':'finished'})
+
+    def act_convert_to_repair(self,cr,uid,ids,context=None):
+        id = ids and ids[0]
+        report_item = self.read(cr,uid,ids,[],context=context)[0]
+        print 'report_item is %s ' % report_item
+        item = {'name':report_item['name']}
+        item['asset_id'] = report_item['asset_id'][0]
+        item['fault_reason'] = report_item['report_reason']
+        item['state'] = 'draft'
+        item['repair_report_id']  = id
+        repair_id = self.pool.get('polling.repair').create(cr,uid,item,context=context)
+        context.update({
+            'default_res_id':repair_id,
+        })
+        self.write(cr,uid,ids,{'state':'converted','repair_id':repair_id},context=context)
+        return {
+                'res_model': 'polling.repair',            
+                'type': 'ir.actions.act_window',
+                'view_id':False,
+                'view_type': 'form',
+                'view_mode': 'form,tree',
+                'context': context,
+                'limit':80,
+                'res_id':repair_id,
+        }
+
     _columns={
         'name':fields.char(string='Report number',size=100,required=True),
         'report_man':fields.many2one('hr.employee',string='Report man'),
         'report_department':fields.related('report_man','department_id',type='many2one',relation='hr.department',string='Report department'),
         'report_time':fields.datetime(string='Report time'),
         'asset_id':fields.many2one('polling.asset',string='Asset'),
+        'repair_id':fields.many2one('polling.repair',string='Repair'),
+        'finished_time':fields.related('repair_id','finished_time',type='datetime',string='finished time'),
         'report_reason':fields.text(string='Report reason'),
         'fault_description':fields.text(string='Fault description'),
         'report_type':fields.selection([('manual','Manual'),('auto','Auto')],string='Report type'),
         'level':fields.selection([('normal','Normal'),('ungent','Ungent'),('veryungent','Very ungent')],string='Level'),
-        'state':fields.selection([('draft','Wait confirm'),('confirmed','Confirmed'),('finished','Finished')],string='State'),
+        'state':fields.selection([('draft','Wait confirm'),('confirmed','Confirmed'),('converted','Converted'),('finished','Finished')],string='State'),
+        'confirm_man':fields.many2one('hr.employee',string='Confirm man'),
+        'confirm_time':fields.datetime(string='Confirm time'),
         'remark':fields.text(string='Remark'),
     }
     _defaults={

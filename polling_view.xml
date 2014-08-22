@@ -584,6 +584,18 @@
  									</tree>
 								</field>
 							</page>
+							<page string='Repair reports'>
+								<field name='repair_report_ids'>
+									<tree string='Reports' version='7.0'>
+										<field name='name'/>
+										<field name='report_man'/>
+										<field name='report_time'/>
+										<field name='asset_id'/>
+										<field name='level'/>
+										<field name='report_type'/>
+									</tree>
+								</field>
+							</page>
 						</notebook>
 						<group col='4' string='Remark'>
 							<field name='remark' colspan='4' nolabel='1'/>
@@ -657,7 +669,7 @@
 			<field name='view_mode'>tree,form</field>
 			<field name='type'>tree</field>
 			<field name='arch' type='xml'>
-				<tree string='Repair reports' version='7.0' colors="red:level=='veryungent';yellow:level=='ungent';blue:state=='finished';">
+				<tree string='Repair reports' version='7.0' colors="red:level=='veryungent';#FF6600:level=='ungent';blue:state=='finished';">
 					<field name='name'/>
 					<field name='report_man'/>
 					<field name='report_department'/>
@@ -679,9 +691,9 @@
 				<form string='Repair report' version='7.0'>
 					<header>
 						<button name='act_confirm' type='object' states='draft' string='Confirm' class='oe_highlight'/>
-						<button name='act_finish' type='object' states='confirmed' string='Finish' class='oe_highlight'/>
 						<button name='act_convert_to_repair' type='object' states='confirmed' string='Convert to repair' class='oe_highlight'/>
-						<field name='state' widget='statusbar' statusbar_visible='draft,confirmed,finished' class='oe_highlight'/>
+						<button name='act_finish' type='object' states='converted' string='Finish' class='oe_highlight'/>
+						<field name='state' widget='statusbar' statusbar_visible='draft,confirmed,converted,finished' class='oe_highlight'/>
 					</header>
 					<sheet>
 						<group col='4'>
@@ -691,7 +703,13 @@
 							<field name='asset_id'/>
 							<field name='level'/>
 							<field name='report_type'/>
-							<field name='report_time'/>
+							<field name='report_time' colspan='3'/>
+						</group>
+						<group col='4'>
+							<field name='confirm_man' readonly='1'/>
+							<field name='confirm_time' readonly='1'/>
+							<field name='repair_id' readonly='1'/>
+							<field name='finished_time' readonly='1'/>
 						</group>
 						<group col='4' string='Report reason'>
 							<field name='report_reason' nolabel='1' holdplace='Report reason' colspan='4'/>
@@ -706,7 +724,6 @@
 				</form>
 			</field>
 		</record>
-		
 
 		<record id="polling_maintain_form_view" model="ir.ui.view">
 			<field name='name'>polling.maintain.form.view</field>
