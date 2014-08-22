@@ -1382,7 +1382,7 @@
 		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
 		<menuitem id="menu_polling_area_manager" action="polling_area_show_action" name="区域建筑管理" parent="menu_polling_template_root" sequence="30"/>
 		<menuitem id="menu_polling_templatecategory_manager" action="aasettemplatecategory_category_action" name="设备分组" parent="menu_polling_template_root" sequence="40"/>
-		<menuitem id="menu_polling_assettemplate_manager" action="polling_action_assettemplate_show" name="设备表单定义" parent="menu_polling_template_root" sequence="50"/>
+		<menuitem id="menu_polling_assettemplate_manager" action="polling_action_assettemplate_show" name="设备类型定义" parent="menu_polling_template_root" sequence="50"/>
 		<menuitem id="menu_polling_asset_manager" action="polling_action_asset_show" name="设备台账管理" parent="menu_polling_template_root" sequence="60"/>
 		<menuitem id="menu_polling_collect_asset_manager" action="polling_action_collect_asset_show" name="采集设备管理" parent="menu_polling_template_root" sequence="70"/>
 		<menuitem id="menu_polling_warning_type_manager" action="action_polling_warning_type_list_show" name="错误类型管理" parent="menu_polling_template_root" sequence="80"/>
