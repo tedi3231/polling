@@ -674,7 +674,8 @@ class polling_asset_collect_record(osv.osv):
         'collect_value':fields.char(string='Collect value',size=100),
         'collect_time':fields.datetime(string='Collect time'),
         'state':fields.selection([('normal','Normal'),('lost','Lost'),('over','Over')],string='Status'),
-        'excep_type':fields.selection([('warning',"Warning"),('error','Error'),('duanxian','DuaniXian'),('normal','Normal')],string='Exception Type'),
+        'excep_type':fields.char(string='Excep type',size=100),
+        #'excep_type':fields.selection([('warning',"Warning"),('error','Error'),('duanxian','DuaniXian'),('normal','Normal')],string='Exception Type'),
     }
 polling_asset_collect_record()
 

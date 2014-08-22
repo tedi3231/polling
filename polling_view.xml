@@ -1375,6 +1375,9 @@
 			<field name='view_mode'>tree,form</field>
 		</record>
 
+		<menuitem id="menu_polling_chart_show" name="设备监控" parent="menu_polling_root" sequence="0"/>
+		<menuitem id="menu_polling_collect_record_chart_show" name="3D实时监控" parent="menu_polling_chart_show" action="action_polling_collect_record_chart_show" sequence="1"/>
+
 		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
 		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
 		<menuitem id="menu_polling_area_manager" action="polling_area_show_action" name="区域建筑管理" parent="menu_polling_template_root" sequence="30"/>
@@ -1403,8 +1406,5 @@
 		<menuitem id="menu_polling_frequent_point_manager" action="polling_action_parol_point_show" name="巡更点" parent="menu_polling_frequent_root" sequence="230"/>
 		<menuitem id="menu_polling_frequent_point_asset_manager" action="polling_action_parol_point_asset_show" name="巡更点设备" parent="menu_polling_frequent_root" sequence="240"/>
 		<menuitem id="menu_polling_frequent_patrol_task_record_manager" action="polling_action_patrol_task_record__show" name="巡更任务记录表" parent="menu_polling_frequent_root" sequence="250"/>
-		
-		<menuitem id="menu_polling_chart_show" name="图表查看" parent="menu_polling_root" sequence="260"/>
-		<menuitem id="menu_polling_collect_record_chart_show" name="巡检记录图表" parent="menu_polling_chart_show" action="action_polling_collect_record_chart_show" sequence="270"/>
 	</data>
 </openerp>
