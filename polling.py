@@ -247,6 +247,13 @@ class polling_assettemplate(osv.osv):
                     }
                 }
     
+    def create(self,cr,uid,data,context=None):
+        template_id = super(polling_assettemplate,self).create(cr,uid,data,context=context)
+        print 'template data is %s' % data
+        wiki_category = {'name':data['name'],'type':'category','content':data['description'],'assettemplate_id':template_id}
+        self.pool.get('document.page').create(cr,uid,wiki_category,context=context)
+        return template_id
+
     _columns = {
         "category_id":fields.many2one("polling.assettemplatecategory",string="Category",select=True),
         'name': fields.char(string='Name', size=64, required=True, translate=True, select=True),
@@ -908,6 +915,35 @@ class polling_repair(osv.osv):
             'context': "{'default_res_model': '%s','default_res_id': %d}" % (self._name, res_id)
         }
 
+    def input_knowledge(self,cr,uid,ids,context=None):
+        item = self.browse(cr,uid,ids,context=context)[0]
+        print 'item is %s ' % item
+        print 'item.name is %s,asset_id.assettemplate_id is %s ' % (item.name,item.asset_id.assettemplate_id)
+        wiki_item = {'category':'content','name':item.fault_reason,'content':item.repair_method,'assettemplate_id':item.asset_id.assettemplate_id.id}
+        wiki_category = self.pool.get('document.page').search(cr,uid,[('type','=','category'),('assettemplate_id','=',item.asset_id.assettemplate_id.id)],context=context)
+        if wiki_category:
+            wiki_item['assettemplate_id'] = wiki_category[0]
+        if self.pool.get('document.page').create(cr,uid,wiki_item,context=context):
+            self.write(cr,uid,ids,{'has_input_knowledge':True},context=context)
+            print 'has_input_knowledge changed to true'
+        return True
+
+    def redirect_knowledge(self,cr,uid,ids,context=None):
+        repair_item = self.browse(cr,uid,ids,context=context)[0]
+        domain = [
+             '&', ('type', '=', 'content'), ('assettemplate_id', '=', repair_item.asset_id.assettemplate_id.id),
+        ]
+        return {
+            'name': _('Pages'),
+            'domain': domain,
+            'res_model': 'document.page',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+
     _columns = {
         "name":fields.char(string="Repair Number",required=True,size=100),
         "asset_id":fields.many2one("polling.asset",string="Asset"),
@@ -929,9 +965,11 @@ class polling_repair(osv.osv):
         'finished_time':fields.datetime(string='Finish repairing time'),
         'polling_repair_lines':fields.one2many('polling.repair.line','polling_repair_id',string='Repair lines'),
         'repair_report_ids':fields.one2many('polling.repair.report','repair_id',string='Reports'),
+        'has_input_knowledge':fields.boolean(string='Has input knowledeg'),
         'remark':fields.text(string='Remark'),
     }
     _defaults = {
+        'has_input_knowledge':lambda self,cr,uid,context:False,
         'state':'draft',
         "create_time":lambda self, cr, uid, context:datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
@@ -1279,4 +1317,10 @@ class polling_patrol_task_record(osv.osv):
                }
 
 polling_patrol_task_record()
+
+class document_page(osv.osv):
+    _inherit='document.page'
+    _columns = {
+        'assettemplate_id':fields.many2one('polling.assettemplate',string='Asset template'),
+    }
 
