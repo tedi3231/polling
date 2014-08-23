@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_report_collect_record_tree" model="ir.ui.view">
+            <field name="name">asset.collect.record.report.tree</field>
+            <field name="model">polling.collect.record.report</field>
+            <field name="arch" type="xml">
+				<tree string="Collect records" create="false">
+					<field name="collect_year"/>
+					<field name="collect_month"/>
+					<field name="collect_day"/>
+					<field name='asset_id'/>
+					<field name='asset_attr_id'/>
+					<field name='collect_point_id'/>
+					<field name='collect_value'/>
+					<field name='excep_type'/>
+					<field name='fault_count'/>
+                </tree>
+            </field>
+        </record>
+		
+		<record id='view_report_collect_record_filter' model='ir.ui.view'>
+			<field name='name'>view.report.collect.record.filter</field>
+			<field name='model'>polling.collect.record.report</field>
+			<field name='arch' type='xml'>
+				<search string='Collect records'>
+					<field name='asset_id' string='Asset'/>
+					<field name='asset_attr_id' string='Asset attribute'/>
+					<field name='collect_point_id' string='Collect point'/>
+					<group expand='1' string='Group By...'>
+						<filter string='Asset' name='asset' domain='[]' context="{'group_by':'asset_id'}"/>
+						<filter string='Asset attribute' name='attribute' domain='[]' context="{'group_by':'asset_attr_id'}"/>
+						<filter string='Year' name='year' domain='[]' context="{'group_by':'collect_year'}"/>
+						<filter string='Month' name='month' domain='[]' context="{'group_by':'collect_month'}"/>
+						<filter string='Day' name='day' domain='[]' context="{'group_by':'collect_day'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id='view_report_collect_record_graph' model='ir.ui.view'>
+			<field name='name'>view.report.collect.record.graph</field>
+			<field name='model'>polling.collect.record.report</field>
+			<field name='arch' type='xml'>
+				<graph string='Collect report'>
+					<field name='asset_id'/>
+					<field name='fault_count' operator='+'/>
+				</graph>
+			</field>
+		</record>
+
+		<record id='action_report_collect_record' model='ir.actions.act_window'>
+			<field name='name'>Collect record report</field>
+			<field name='res_model'>polling.collect.record.report</field>
+			<field name='view_type'>form</field>
+			<field name='context'>{'search_default_asset':'1','search_default_year':1,'search_default_month':1}</field>
+			<field name='view_mode'>tree,graph</field>
+			<field name='domain'>[]</field>
+		</record>
+
+		<menuitem id="menu_polling_report_root" name="Polling report" parent="base.menu_reporting" sequence="10"/>
+		<menuitem id='menu_polling_collect_report' name='Collect record' parent='menu_polling_report_root' action='action_report_collect_record'/>
+	</data>
+</openerp>

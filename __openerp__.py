@@ -7,6 +7,7 @@
     "description":"智能楼宇设备巡检系统",
     "data":[
         "polling_view.xml",
+        "report/polling_collect_record_report_view.xml"
     ],
     "depends":[
         "web",
