@@ -691,7 +691,7 @@ class polling_warning_type(osv.osv):
     _columns = {
         'name':fields.char(string='Name',size=100,required=True),
         'code':fields.char(string='Code',size=100,required=True),
-        'trigger_repair_so':fields.boolean(string='Trigger repair',required=True),
+        'trigger_repair_so':fields.boolean(string='Trigger repair'),
         'remark':fields.text(string='Remark'),
     }
     _defaults = {
