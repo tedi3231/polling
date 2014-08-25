@@ -740,7 +740,7 @@ class polling_asset_attribute_warning(osv.osv):
         warning_rep = self.pool.get('polling.warning.type')
         warning_ids = warning_rep.search(cr,uid,[],context=context)
         for item in warning_rep.read(cr,uid,warning_ids,['name','code'],context=context):
-            res.append((item['name'],item['code']))
+            res.append((item['code'],item['name']))
         return res
 
     _columns = {

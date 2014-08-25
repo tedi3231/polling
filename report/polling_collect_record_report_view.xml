@@ -43,7 +43,7 @@
 			<field name='model'>polling.collect.record.report</field>
 			<field name='arch' type='xml'>
 				<graph string='Collect report'>
-					<field name='asset_id'/>
+					<field name='asset_id' group='True'/>
 					<field name='fault_count' operator='+'/>
 				</graph>
 			</field>

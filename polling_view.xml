@@ -1103,7 +1103,7 @@
 		<field name='arch' type='xml'>
 			<graph string='Collect Records'>
 				<field name='excep_type' group='True'/>
-				<field name='collect_time' operator='measure'/>
+				<field name='collect_time' operator='+'/>
 			</graph>
 		</field>
 	</record>
