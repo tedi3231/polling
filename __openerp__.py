@@ -20,6 +20,12 @@
         "static/src/js/highstock_src.js",
         "static/src/js/exporting_src.js",
         "static/src/js/polling.js",
+        "static/src/js/spin.js",
+        "static/src/js/three.js",
+        "static/src/js/stats.min.js",
+        "static/src/js/OrbitControls.js",
+        "static/src/js/MTLLoader.js",
+        "static/src/js/OBJMTLLoader.js",
         ],
     "qweb":[
         "static/src/xml/polling.xml",

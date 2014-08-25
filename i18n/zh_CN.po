@@ -1053,7 +1053,7 @@ msgstr "巡检路径"
 #: field:polling.repair.report,remark:0
 #: field:polling.warning.type,remark:0
 msgid "Remark"
-msgstr "区域备注"
+msgstr "备注"
 
 #. module: polling
 #: view:polling.parol.path.point:0

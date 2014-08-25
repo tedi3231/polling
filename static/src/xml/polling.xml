@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="demotemplate" xml:space="xml">
 	<t t-name="demo">
+		<input id="assid_cont" style="display:none"></input>
 		<div id="demo1_div">
-			<iframe src="http://192.168.1.105/test.html" height="100%" width="100%" frameborder="0"></iframe>
+
 		</div>
-        		
+
 		<div id="demo2_div">
-			<p id="demo2"></p>					
+				
 		</div>
 				
 		<div id="demo3_div">

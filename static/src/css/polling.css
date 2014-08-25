@@ -1,24 +1,37 @@
 #demo1_div{
+	position:fixed;
 	margin-left:2%;
 	height:100%;
-	width:52%;
-	float:left;
+	width:43%;
 	}
 	
 #demo2_div{
+	position:fixed;
+	left:62%;
+	top:7%;
 	margin-right:2%;
 	height:40%;
-	width:40%;
-	float:right;	
-	
+	width:36%;
+	text-align:center;
+	font-size:x-large;	
 }
 
 #demo3_div{
+	position:fixed;
+	left:62%;
+	top:52%;
 	margin-right:2%;
-	margin-top:5%;
 	height:40%;
-	width:40%;
-	float:right;
-}
+	width:36%;
+	text-align:center;
+	font-size:x-large;
 
-#
+}
+			
+#info {
+	background:#beceeb;
+	width:"40%";
+	height:"50%";
+	outline-style :double;
+	outline-color :#32CD99;
+}
