@@ -691,7 +691,11 @@ class polling_warning_type(osv.osv):
     _columns = {
         'name':fields.char(string='Name',size=100,required=True),
         'code':fields.char(string='Code',size=100,required=True),
+        'trigger_repair_so':fields.boolean(string='Trigger repair',required=True),
         'remark':fields.text(string='Remark'),
+    }
+    _defaults = {
+        'trigger_repair_so':False,
     }
     _sql_constraints = {
         ('code','unique(code)','Code must be unique!'),
@@ -1282,7 +1286,7 @@ class polling_asset_warning_errorrecord(osv.osv):
             'collect_value':fields.char(string='Collect value',size=100),
             'collect_time':fields.datetime(string='Collect time'),
             'state':fields.selection([('normal','Normal'),('lost','Lost'),('over','Over')],string='Status'),
-            'excep_type':fields.selection([('warning',"Warning"),('error','Error'),('duanxian','DuaniXian')],string='Exception Type'),
+            'excep_type':fields.char(string='Exception Type'),
             'description':fields.char(string='Description',size=200),
             }
 polling_asset_warning_errorrecord()

@@ -877,9 +877,19 @@ msgstr "已完成"
 #: field:polling.parol.frequent,name:0
 #: field:polling.parol.path,name:0
 #: field:polling.relationtype,name:0
+msgid "Name"
+msgstr "名称"
+
+#. module: polling
 #: field:polling.warning.type,name:0
 msgid "Name"
-msgstr "区域名称"
+msgstr "错误名称"
+
+#. module: polling
+#: field:polling.warning.type,trigger_repair_so:0
+msgid "Trigger repair"
+msgstr "触发维修单"
+
 
 #. module: polling
 #: model:ir.actions.client,name:polling.action_polling_collect_record_chart_show
