@@ -205,13 +205,13 @@ openerp.polling = function(instance)  {
 						
 						if (INTERSECTEDCLICK ==  object1)
 						{
-							contdemo2("1,air_conditions");
-							contdemo3("1,air_conditions");
+							contdemo2("4,BY0002");
+							contdemo3("4,BY0002");
 						}
 						if (INTERSECTEDCLICK ==  object2)
 						{
-							contdemo2("2,light");
-							contdemo3("2,light");							
+							contdemo2("ZK_001,总控统计电");
+							contdemo3("ZK_001,总控统计电");							
 						}
 
 					}
@@ -271,7 +271,7 @@ openerp.polling = function(instance)  {
 						
 						if (INTERSECTED ==object1)
 						{
-							info.innerHTML = "1,air_conditions";
+							info.innerHTML = "BY0002";
 						}
 						
 						if (INTERSECTED ==object2)
@@ -362,7 +362,8 @@ openerp.polling = function(instance)  {
 		{
 			require = undefined;
 		}
-		model.query(["asset_id","asset_attr_id","asset_attr_high","asset_attr_low","collect_value","collect_time"]).all().then(function(result){
+		
+		model.query(["asset_id","asset_attr_id","asset_attr_high","asset_attr_low","collect_value","collect_time"]).limit(5000).all().then(function(result){
 		mytitle1="The history of asset_id \""+require+"\"";
 		
 		var datetemp;
@@ -779,14 +780,13 @@ openerp.polling = function(instance)  {
 				};
 			if ($('#demo3_div').highcharts() == null)
 				{					
-					alert('111');
 					clearInterval(funcdemo3_addpoint);
 					break;
 					
 				}	
 			for (n=0;n<markname.length+1;n++)
 			{
-					if ($('#demo3_div').highcharts().series[n].name == markname[m])
+					if ($('#demo3_div').highcharts().series[n] !=undefined && $('#demo3_div').highcharts().series[n].name == markname[m])
 					{
 						$('#demo3_div').highcharts().series[n].addPoint(markdata[m][0]);
 

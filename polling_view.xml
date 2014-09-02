@@ -56,12 +56,67 @@
 			</field>
 		</record>
 
+		<record id='polling_area_related_repair' model='ir.actions.act_window'>
+	   		<field name='name'>Repairs</field>
+	   		<field name='res_model'>polling.repair</field>
+	   		<field name='view_mode'>tree,form</field>
+	   		<field name='domain'>[]</field>
+	   		<field name='context'>{'search_default_install_area':active_id}</field>
+	   		<field name='view_id' eval='False'/>
+	    </record>
+
+		<record id='polling_area_kanban_view' model='ir.ui.view'>
+			<field name='name'>polling.area.kanban.view</field>
+			<field name='model'>polling.area</field>
+			<field name='arch' type='xml'>
+				<kanban version="7.0" class="oe_background_grey">
+					<field name='name'/>
+					<field name='remark'/>
+					<field name='image'/>
+					<field name='has_image'/>
+					<templates>
+						<t t-name="kanban-box">
+                            <div class="oe_kanban_vignette oe_semantic_html_override">
+                                <a type="open">
+                                    <t t-if="record.has_image.raw_value === true">
+                                        <img t-att-src="kanban_image('polling.area', 'image', record.id.value)" class="oe_kanban_image"/>
+                                    </t>
+                                    <t t-if="record.has_image.raw_value === false">
+                                        <img t-att-src='_s + "/base/static/src/img/company_image.png"' class="oe_kanban_image"/>
+                                    </t>
+                                </a>
+                                <div class="oe_kanban_details">
+                                    <h4 class="oe_partner_heading">
+                                    	<a type="open"><field name="name"/></a>
+                                    </h4>         
+                                    <ul>
+                                    	<li>Building count:<field name='polling_buildings_count'/></li>
+                                    	<li>
+                                    		<a name='%(polling_area_related_repair)d' type='action'>
+                                    			<field name='repair_order_count'/> Repairs
+                                    		</a>
+                                    	</li>
+                                    	<li>
+                                    		<a name='related_warning_and_errors' type='object'>
+                                    			<field name='warning_error_count'/> Warning or errors
+                                    		</a>
+                                    	</li>
+                                    </ul>                       
+                                </div>
+                            </div>
+                        </t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+
 		<record id='polling_area_form_view' model='ir.ui.view'>
 			<field name='name'>polling.area.form.view</field>
 			<field name='model'>polling.area</field>
 			<field name='arch' type='xml'>
 				<form string='Area' version='7.0'>
 					<sheet>
+						<field name="image" widget='image' class="oe_left oe_avatar" options='{"preview_image": "image_medium", "size": [90, 90]}'/>
 						<group>
 							<field name='name'/>
 							<field name='remark'/>
@@ -1162,8 +1217,11 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">polling.area</field>
             <field name="domain">[]</field>
-           <field name="view_type">form</field>
+            <field name='view_mode'>kanban,tree,form</field>
+            <field name="view_type">form</field>
 	   </record>
+
+	   
 
        <record id="polling_action_relationtype_show" model="ir.actions.act_window">
             <field name="name">Relation Type</field>
@@ -1402,8 +1460,8 @@
 			<field name='view_mode'>tree,form</field>
 		</record>
 
-		<menuitem id="menu_polling_chart_show" name="设备监控" parent="menu_polling_root" sequence="0"/>
-		<menuitem id="menu_polling_collect_record_chart_show" name="3D实时监控" parent="menu_polling_chart_show" action="action_polling_collect_record_chart_show" sequence="1"/>
+		<!--<menuitem id="menu_polling_chart_show" name="设备监控" parent="menu_polling_root" sequence="0"/>
+		<menuitem id="menu_polling_collect_record_chart_show" name="3D实时监控" parent="menu_polling_chart_show" action="action_polling_collect_record_chart_show" sequence="1"/>-->
 
 		<menuitem id="menu_polling_root" name="楼宇巡检" sequence="10" />
 		<menuitem id="menu_polling_template_root" name="基础数据管理" parent="menu_polling_root" sequence="20"/>
