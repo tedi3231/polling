@@ -860,14 +860,16 @@ class polling_area(osv.osv):
         return result
 
     def get_building_count(self,cr,uid,ids,name,arg,context=None):
-        result = dict.fromkeys(ids,0)
-        build_rep = self.pool.get("polling.building")
-        building_ids = build_rep.search(cr,uid,[('area_id','in',ids)],context=context)
-        for item in build_rep.browse(cr,uid,building_ids,context=context):
-            result[item.area_id.id] += 1
-        print 'building count is %s ' % result
-        return result
-
+        cr.execute("""
+            SELECT area.id,count(building.id) FROM polling_area area
+            LEFT JOIN polling_building building
+            ON area.id = building.area_id    
+            WHERE area.id in %s                
+            GROUP BY area.id 
+         """,(tuple(ids),))
+        res = dict(cr.fetchall())
+        return res
+        
     def get_repair_order_count(self,cr,uid,ids,name,args,context=None):
         result = dict.fromkeys(ids,0)
         cr.execute("""
@@ -875,12 +877,11 @@ class polling_area(osv.osv):
                     LEFT JOIN polling_asset asset
                     ON area.id = asset.install_area_id
                     LEFT JOIN polling_repair repair
-                    ON asset.id = repair.asset_id
+                    ON asset.id = repair.asset_id and repair.state<>'finished'
                     WHERE area.id in %s
                     GROUP by area.id
         """,(tuple(ids),))
         res = dict(cr.fetchall())
-        print 'res is %s'%res
         return res
 
     def get_warning_error_count(self,cr,uid,ids,name,args,context=None):
@@ -895,7 +896,6 @@ class polling_area(osv.osv):
                     GROUP by area.id
         """,(tuple(ids),))
         res = dict(cr.fetchall())
-        print 'res is %s'%res
         return res
     
     def related_warning_and_errors(self,cr,uid,ids,context=None):
@@ -910,6 +910,46 @@ class polling_area(osv.osv):
             'name': _('Warning and error'),
             'domain': domain,
             'res_model': 'polling.asset.warning.error',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+
+    def related_building(self,cr,uid,ids,context=None):
+        building_ids = self.pool.get("polling.building").search(cr,uid,[('area_id','in',ids)],context=context)
+        domain = [
+             ('id', 'in', building_ids)
+        ]
+        return {
+            'name': _('Buildings'),
+            'domain': domain,
+            'res_model': 'polling.building',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'kanban,tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+
+    def related_repair(self,cr,uid,ids,context=None):
+        cr.execute("""
+                SELECT  repair.id FROM polling_area as area
+                    LEFT JOIN polling_asset asset
+                    ON area.id = asset.install_area_id
+                    LEFT JOIN polling_repair repair
+                    ON asset.id = repair.asset_id  
+                    WHERE area.id in %s and repair.state<>'finished'
+            """,(tuple(ids),))
+        repair_ids = list(cr.fetchall())
+        domain = [
+             ('id', 'in', repair_ids)
+        ]
+        return {
+            'name': _('Repairs'),
+            'domain': domain,
+            'res_model': 'polling.repair',
             'type': 'ir.actions.act_window',
             'view_id': False,
             'view_mode': 'tree,form',
@@ -948,24 +988,268 @@ class polling_area(osv.osv):
 polling_area()
 
 class polling_building(osv.osv):                                                                
-     _name = "polling.building"         
+    _name = "polling.building"         
 
-     _columns = {                                                                                    
-         "name":fields.char(string="Name",required=True,size=100),                                   
-         "remark":fields.char(string="Remark",size=500,required=True),                      
-         'area_id':fields.many2one('polling.area',string='Area'),
-         "positions":fields.one2many("polling.building.position","polling_building_id",strin="Racks"),        
-     }                                                                                               
+    def _get_image(self, cr, uid, ids, name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = tools.image_get_resized_images(obj.image)
+        return result
+
+    def _set_image(self, cr, uid, id, name, value, args, context=None):
+        return self.write(cr, uid, [id], {'image': tools.image_resize_image_big(value)}, context=context)
+
+    def _has_image(self, cr, uid, ids, name, args, context=None):
+        result = {}
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = obj.image != False
+        return result
+
+    def get_position_count(self,cr,uid,ids,name,arg,context=None):
+        cr.execute("""
+            SELECT building.id,count(pbp.id) FROM polling_building building
+                LEFT JOIN polling_building_position pbp
+                ON building.id = pbp.polling_building_id  
+                WHERE building.id in %s                  
+                GROUP BY building.id
+            """,(tuple(ids),))
+        res = dict(cr.fetchall())
+        return res
+    
+    def get_repair_order_count(self,cr,uid,ids,name,args,context=None):
+        result = dict.fromkeys(ids,0)
+        cr.execute("""
+            SELECT building.id,count(repair.id) FROM polling_building as building
+                    LEFT JOIN polling_asset asset
+                    ON building.id = asset.install_building_id
+                    LEFT JOIN polling_repair repair
+                    ON asset.id = repair.asset_id and repair.state<>'finished'
+                    WHERE building.id in %s
+                    GROUP by building.id  
+                """,(tuple(ids),))
+        res = dict(cr.fetchall())
+        return res
+
+    def get_warning_error_count(self,cr,uid,ids,name,args,context=None):
+        result = dict.fromkeys(ids,0)
+        cr.execute("""
+            SELECT building.id,count(error.id) FROM polling_building as building
+                    LEFT JOIN polling_asset asset
+                    ON building.id = asset.install_building_id
+                    LEFT JOIN polling_asset_warning_error error
+                    ON asset.id = error.asset_id
+                    WHERE building.id in %s
+                    GROUP by building.id
+        """,(tuple(ids),))
+        res = dict(cr.fetchall())
+        return res
+
+    def related_warning_and_errors(self,cr,uid,ids,context=None):
+        print 'related_warning_and_errors is called '
+        asset_ids = self.pool.get('polling.asset').search(cr,uid,[('install_building_id','in',ids)],context=context)
+        print 'asset_ids is %s ' % asset_ids
+        domain = [
+             ('asset_id', 'in', asset_ids)
+        ]
+        res_id = ids and ids[0] or False
+        return {
+            'name': _('Warning and error'),
+            'domain': domain,
+            'res_model': 'polling.asset.warning.error',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+
+    def related_position(self,cr,uid,ids,context=None):
+        position_ids = self.pool.get("polling.building.position").search(cr,uid,[('polling_building_id','in',ids)],context=context)
+        domain = [
+             ('id', 'in', position_ids)
+        ]
+        return {
+            'name': _('Positions'),
+            'domain': domain,
+            'res_model': 'polling.building.position',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'kanban,tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+
+    def related_repair(self,cr,uid,ids,context=None):
+        cr.execute("""
+                SELECT  repair.id FROM polling_building as building
+                    LEFT JOIN polling_asset asset
+                    ON building.id = asset.install_building_id
+                    LEFT JOIN polling_repair repair
+                    ON asset.id = repair.asset_id  
+                    WHERE building.id in %s and repair.state<>'finished'
+            """,(tuple(ids),))
+        repair_ids = list(cr.fetchall())
+        domain = [
+             ('id', 'in', repair_ids)
+        ]
+        return {
+            'name': _('Repairs'),
+            'domain': domain,
+            'res_model': 'polling.repair',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+
+    _columns = {                                                                                    
+        "name":fields.char(string="Name",required=True,size=100),                                   
+        "remark":fields.char(string="Remark",size=500,required=True),                      
+        'area_id':fields.many2one('polling.area',string='Area'),
+        'positions':fields.one2many("polling.building.position","polling_building_id",strin="Racks"),    
+        'position_count':fields.function(get_position_count,type='integer',string='Room count'),
+        'repair_order_count':fields.function(get_repair_order_count,type='integer',string='Repair count'),
+        'warning_error_count':fields.function(get_warning_error_count,type='integer',string='Warning and error count'),
+        'image': fields.binary("Image",
+            help="This field holds the image used as avatar for this contact, limited to 1024x1024px"),
+        'image_medium': fields.function(_get_image, fnct_inv=_set_image,
+            string="Medium-sized image", type="binary", multi="_get_image",
+            store={
+                'polling.area': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
+            },
+            help="Medium-sized image of this contact. It is automatically "\
+                 "resized as a 128x128px image, with aspect ratio preserved. "\
+                 "Use this field in form views or some kanban views."),
+        'image_small': fields.function(_get_image, fnct_inv=_set_image,
+            string="Small-sized image", type="binary", multi="_get_image",
+            store={
+                'polling.area': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
+            },
+            help="Small-sized image of this contact. It is automatically "\
+                 "resized as a 64x64px image, with aspect ratio preserved. "\
+                 "Use this field anywhere a small image is required."),
+        'has_image': fields.function(_has_image, type="boolean"),  
+
+    }                                                                                               
 polling_building()                                                                              
                                                                                                      
 class polling_building_position(osv.osv):                                                           
-    _name = "polling.building.position"                                                             
+    _name = "polling.building.position"    
+
+    def _get_image(self, cr, uid, ids, name, args, context=None):
+        result = dict.fromkeys(ids, False)
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = tools.image_get_resized_images(obj.image)
+        return result
+
+    def _set_image(self, cr, uid, id, name, value, args, context=None):
+        return self.write(cr, uid, [id], {'image': tools.image_resize_image_big(value)}, context=context)
+
+    def _has_image(self, cr, uid, ids, name, args, context=None):
+        result = {}
+        for obj in self.browse(cr, uid, ids, context=context):
+            result[obj.id] = obj.image != False
+        return result
+    
+    def get_repair_order_count(self,cr,uid,ids,name,args,context=None):
+        result = dict.fromkeys(ids,0)
+        cr.execute("""
+            SELECT position.id,count(repair.id) FROM polling_building_position as position
+                    LEFT JOIN polling_asset asset
+                    ON position.id = asset.install_position_id
+                    LEFT JOIN polling_repair repair
+                    ON asset.id = repair.asset_id and repair.state<>'finished'
+                    WHERE position.id in %s
+                    GROUP by position.id  
+                """,(tuple(ids),))
+        res = dict(cr.fetchall())
+        return res
+
+    def get_warning_error_count(self,cr,uid,ids,name,args,context=None):
+        result = dict.fromkeys(ids,0)
+        cr.execute("""
+            SELECT position.id,count(error.id) FROM polling_building_position as position
+                    LEFT JOIN polling_asset asset
+                    ON position.id = asset.install_position_id
+                    LEFT JOIN polling_asset_warning_error error
+                    ON asset.id = error.asset_id
+                    WHERE position.id in %s
+                    GROUP by position.id
+        """,(tuple(ids),))
+        res = dict(cr.fetchall())
+        return res
+
+    def related_warning_and_errors(self,cr,uid,ids,context=None):
+        print 'related_warning_and_errors is called '
+        asset_ids = self.pool.get('polling.asset').search(cr,uid,[('install_position_id','in',ids)],context=context)
+        print 'asset_ids is %s ' % asset_ids
+        domain = [
+             ('asset_id', 'in', asset_ids)
+        ]
+        res_id = ids and ids[0] or False
+        return {
+            'name': _('Warning and error'),
+            'domain': domain,
+            'res_model': 'polling.asset.warning.error',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+ 
+    def related_repair(self,cr,uid,ids,context=None):
+        cr.execute("""
+                SELECT repair.id FROM polling_building_position as position
+                    LEFT JOIN polling_asset asset
+                    ON position.id = asset.install_position_id
+                    LEFT JOIN polling_repair repair
+                    ON asset.id = repair.asset_id  
+                    WHERE position.id in %s and repair.state<>'finished'
+            """,(tuple(ids),))
+        repair_ids = list(cr.fetchall())
+        domain = [
+             ('id', 'in', repair_ids)
+        ]
+        return {
+            'name': _('Repairs'),
+            'domain': domain,
+            'res_model': 'polling.repair',
+            'type': 'ir.actions.act_window',
+            'view_id': False,
+            'view_mode': 'tree,form',
+            'view_type': 'form',
+            'limit': 80,
+        }
+
     _columns = {                                                                                    
         "name":fields.char(string="Name",size=200,required=True),                                   
         "polling_building_id":fields.many2one("polling.building",string="Building",required=True),
-        "remark":fields.char(string="Remark",size=500,required=False),                              
+        "remark":fields.char(string="Remark",size=500,required=False),    
+        'repair_order_count':fields.function(get_repair_order_count,type='integer',string='Repair count'),
+        'warning_error_count':fields.function(get_warning_error_count,type='integer',string='Warning and error count'),
+        'image': fields.binary("Image",
+            help="This field holds the image used as avatar for this contact, limited to 1024x1024px"),
+        'image_medium': fields.function(_get_image, fnct_inv=_set_image,
+            string="Medium-sized image", type="binary", multi="_get_image",
+            store={
+                'polling.area': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
+            },
+            help="Medium-sized image of this contact. It is automatically "\
+                 "resized as a 128x128px image, with aspect ratio preserved. "\
+                 "Use this field in form views or some kanban views."),
+        'image_small': fields.function(_get_image, fnct_inv=_set_image,
+            string="Small-sized image", type="binary", multi="_get_image",
+            store={
+                'polling.area': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
+            },
+            help="Small-sized image of this contact. It is automatically "\
+                 "resized as a 64x64px image, with aspect ratio preserved. "\
+                 "Use this field anywhere a small image is required."),
+        'has_image': fields.function(_has_image, type="boolean"),                            
     }                                                                                               
-polling_building_position()  
+polling_building_position()
 
 class polling_repair(osv.osv):
     _name = "polling.repair"
